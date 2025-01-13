@@ -11,9 +11,9 @@
 }
 
 .NavBar-link {
-    display: flex;
     color: white;
     text-decoration: none;
+    margin-right: var(--s);
     padding: var(--s);
     border-radius: var(--s);
 }
