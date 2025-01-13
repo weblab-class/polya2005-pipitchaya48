@@ -7,13 +7,12 @@
 }
 
 .NavBar-linkContainer {
-    padding: var(--s);
+    padding: var(--s) 0;
 }
 
 .NavBar-link {
     color: white;
     text-decoration: none;
-    margin-right: var(--s);
     padding: var(--s);
     border-radius: var(--s);
 }
