@@ -1,0 +1,48 @@
+.AutocompleteInput-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--s);
+  position: relative;
+}
+
+.AutocompleteInput-root {
+  width: 100%;
+  border: var(--default-border-width) solid var(--default-border);
+  border-radius: var(--s);
+  overflow: hidden;
+}
+
+.AutocompleteInput-container input {
+  width: 100%;
+  padding: var(--s) var(--m);
+  border: none;
+  border-radius: inherit;
+  font-size: var(--m);
+  flex: 1 0 auto;
+}
+
+.AutocompleteInput-dropdown {
+  position: relative;
+  width: 100%;
+  border-radius: var(--s);
+}
+
+.AutocompleteInput-container ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  border-radius: var(--s);
+  background-color: var(--white);
+  box-sizing: border-box;
+}
+
+.AutocompleteInput-container li {
+  list-style-type: none;
+  padding: var(--s);
+  cursor: pointer;
+}
