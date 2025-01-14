@@ -8,6 +8,8 @@
  * e.g. get('/api/foo', { bar: 0 }).then(res => console.log(res))
  */
 
+import { clsx } from "clsx";
+
 // ex: formatParams({ some_key: "some_value", a: "b"}) => "some_key=some_value&a=b"
 function formatParams(params) {
   // iterate of all the keys of params as an array,
@@ -60,4 +62,9 @@ export function post(endpoint, params = {}) {
       // give a useful error message
       throw `POST request to ${endpoint} failed with error:\n${error}`;
     });
+}
+
+// Helper code to add classNames to props
+export function addClassName(props, className) {
+  return { ...props, className: clsx(props.className, className) };
 }
