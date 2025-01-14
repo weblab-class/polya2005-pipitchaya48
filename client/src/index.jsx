@@ -1,8 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./components/App";
-import NavBar from "./components/modules/NavBar";
-import Skeleton from "./components/pages/Skeleton";
 import NotFound from "./components/pages/NotFound";
 
 import {
@@ -13,6 +11,7 @@ import {
 } from "react-router-dom";
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { Home } from "./components/pages/Home";
 
 //TODO: REPLACE WITH YOUR OWN CLIENT_ID
 const GOOGLE_CLIENT_ID = "105463250048-ijbj257fhgd9gtlrp1lpoa1ffnklsfn1.apps.googleusercontent.com";
@@ -20,7 +19,7 @@ const GOOGLE_CLIENT_ID = "105463250048-ijbj257fhgd9gtlrp1lpoa1ffnklsfn1.apps.goo
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route errorElement={<NotFound />} element={<App />}>
-      <Route path="/" element={<Skeleton />} />
+      <Route path="/" element={<Home />} />
     </Route>
   )
 );
