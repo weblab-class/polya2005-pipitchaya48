@@ -4,7 +4,6 @@ import { Outlet } from "react-router-dom";
 
 import jwt_decode from "jwt-decode";
 
-import "./App.css"
 import "../utilities.css";
 
 import { socket } from "../client-socket";
