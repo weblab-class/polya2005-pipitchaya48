@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAutocomplete } from "@mui/base";
 import { addClassName } from "../../utilities";
+import clsx from "clsx";
 
 import "./AutocompleteInput.css";
 import "../../utilities.css";
@@ -46,16 +47,16 @@ const AutocompleteInput = ({
   });
 
   return (
-    <div className="AutocompleteInput-container">
+    <div className="flex flex-col items-start justify-start gap-s relative">
       <label {...addClassName(getInputLabelProps(), "")}>{inputLabelText}</label>
-      <div {...addClassName(getRootProps(), "AutocompleteInput-root u-flex")}>
-        <input {...addClassName({ ...getInputProps(), ...props }, className)} />
+      <div {...addClassName(getRootProps(), "flex w-full border border-solid border-gray-300 rounded-lg")}>
+        <input {...addClassName({ ...getInputProps(), ...props }, clsx(className, "w-full px-m py-s border-none u-border-radius-inherit flex-auto"))} />
       </div>
       {groupedOptions.length > 0 && (
         <div className="AutocompleteInput-dropdown">
-          <ul {...addClassName(getListboxProps(), "")}>
+          <ul {...addClassName(getListboxProps(), "list-none p-xs m-0 w-full max-h-80 overflow-y-auto absolute z-10 border border-solid border-gray-300 rounded-lg bg-white shadow")}>
             {groupedOptions.map((option, index) => (
-              <li {...getOptionProps({ option, index })}>{getOptionLabel(option)}</li>
+              <li {...addClassName(getOptionProps({ option, index }), "list-none p-s rounded hover:bg-gray-50 cursor-pointer aria-selected:bg-gray-200")}>{getOptionLabel(option)}</li>
             ))}
           </ul>
         </div>

@@ -4,7 +4,11 @@
   --primary: #750014;
   --secondary: #8b959e;
   --accent: #ff1423;
-  
+
+  --on-primary: var(--background);
+  --on-secondary: var(--text);
+  --on-accent: var(--background);
+
   --default-border: #d9d9d9;
   --default-shadow: #0000001a;
   --darkgrey: #d4d4d4;
@@ -75,4 +79,21 @@
 
 #root {
   background-color: var(--background);
+}
+
+.u-mainButton {
+  padding: var(--s) var(--m);
+  border: none;
+  border-radius: var(--s);
+  font-size: 1rem;
+  border: var(--default-border-width) solid #2c2c2c;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.u-accent {
+  background-color: var(--accent);
+  color: var(--on-accent);
 }
