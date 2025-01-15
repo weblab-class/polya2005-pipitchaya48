@@ -3,7 +3,6 @@ import { useAutocomplete } from "@mui/base";
 import { addClassName } from "../../utilities";
 import clsx from "clsx";
 
-import "./AutocompleteInput.css";
 import "../../utilities.css";
 
 /**
