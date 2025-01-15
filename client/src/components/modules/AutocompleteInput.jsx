@@ -42,7 +42,6 @@ const AutocompleteInput = ({
       if (onChange) {
         onChange(newValue);
       }
-      console.log(newValue);
     },
   });
 
