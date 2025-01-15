@@ -10,9 +10,9 @@ const NavBar = () => {
     <nav className="flex flex-col w-full bg-mit-red p-m justify-around shadow">
       <div className="u-flex">[logo]</div>
       <div className="px-0 py-s flex gap-s">
-        <NavLink to="/" className="text-white text no-underline p-s rounded-lg">Home</NavLink>
-        <NavLink to="/report/" className="text-white text no-underline p-s rounded-lg">Report closed route</NavLink>
-        <NavLink to="/settings/" className="text-white text no-underline p-s rounded-lg">Settings</NavLink>
+        <NavLink to="/" className="text-white text no-underline p-s rounded-lg align-middle">Home</NavLink>
+        <NavLink to="/report/" className="text-white text no-underline p-s rounded-lg align-middle tracking-tight">Report closed route</NavLink>
+        <NavLink to="/settings/" className="text-white text no-underline p-s rounded-lg align-middle">Settings</NavLink>
       </div>
     </nav>
   );
