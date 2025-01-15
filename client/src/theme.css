@@ -83,14 +83,9 @@
 
 .u-mainButton {
   padding: var(--s) var(--m);
-  border: none;
   border-radius: var(--s);
   font-size: 1rem;
   border: var(--default-border-width) solid #2c2c2c;
-
-  &:hover {
-    cursor: pointer;
-  }
 }
 
 .u-accent {
