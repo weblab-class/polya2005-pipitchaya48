@@ -7,12 +7,12 @@ import "../../utilities.css";
 
 const NavBar = () => {
   return (
-    <nav className="NavBar-container">
+    <nav className="flex flex-col w-full bg-mit-red p-m justify-around shadow">
       <div className="u-flex">[logo]</div>
-      <div className="NavBar-linkContainer u-flex u-flex-gap-s">
-        <NavLink to="/" className="NavBar-link">Home</NavLink>
-        <NavLink to="/report/" className="NavBar-link">Report closed route</NavLink>
-        <NavLink to="/settings/" className="NavBar-link">Settings</NavLink>
+      <div className="px-0 py-s flex gap-s">
+        <NavLink to="/" className="text-white text no-underline p-s rounded-lg">Home</NavLink>
+        <NavLink to="/report/" className="text-white text no-underline p-s rounded-lg">Report closed route</NavLink>
+        <NavLink to="/settings/" className="text-white text no-underline p-s rounded-lg">Settings</NavLink>
       </div>
     </nav>
   );

@@ -1,24 +1,3 @@
-.NavBar-container {
-  display: flex;
-  width: 100%;
-  background-color: var(--primary);
-  padding: var(--m);
-  flex-direction: column;
-  justify-content: space-around;
-  box-shadow: 0 2px 4px var(--default-shadow);
-}
-
-.NavBar-linkContainer {
-  padding: var(--s) 0;
-}
-
-.NavBar-link {
-  color: white;
-  text-decoration: none;
-  padding: var(--s);
-  border-radius: var(--s);
-}
-
 a.active {
   background-color: var(--white);
   color: var(--primary);
