@@ -32,7 +32,7 @@ module.exports = {
           900: "#53595f",
           950: "#363b3f",
         },
-        "red-orange": {
+        "bright-red": {
           50: "#fff0f1",
           100: "#ffdddf",
           200: "#ffc0c4",
