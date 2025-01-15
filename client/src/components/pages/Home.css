@@ -1,14 +1,13 @@
-.Home-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: var(--s);
-  margin-top: 25%;
+.Home-topSpacer {
+  flex: 1 1 auto;
 }
 
-h1 {
-  text-align: center;
+.Home-bottomSpacer {
+  flex: 3 3 auto;
+}
+
+.Home-content {
+  flex: 3 3 auto;
 }
 
 .Home-searchContainer {
@@ -19,12 +18,12 @@ h1 {
 .Home-search {
   padding: var(--s) var(--m);
   width: 100%;
+  border: var(--default-border-width) solid var(--default-border);
   border-radius: 1000px;
-  border-color: var(--default-border);
-  border-style: solid;
 }
 
 .Home-search input {
+  min-width: fit-content;
   width: 100%;
   border: none;
 }
