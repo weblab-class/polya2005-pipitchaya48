@@ -12,6 +12,7 @@ import {
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Home } from "./components/pages/Home";
+import { Results } from "./components/pages/Results";
 
 const GOOGLE_CLIENT_ID = "105463250048-ijbj257fhgd9gtlrp1lpoa1ffnklsfn1.apps.googleusercontent.com";
 
@@ -19,6 +20,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route errorElement={<NotFound />} element={<App />}>
       <Route path="/" element={<Home />} />
+      <Route path="/results" element={<Results />} />
     </Route>
   )
 );

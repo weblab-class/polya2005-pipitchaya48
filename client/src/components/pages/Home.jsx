@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { createSearchParams, useNavigate } from "react-router-dom";
 import AutocompleteInput from "../modules/AutocompleteInput";
 import { Input, Button } from "@mui/base";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -42,15 +42,26 @@ const hardcodedLocations = [
  * Home page component
  */
 const Search = () => {
-  const [searchQuery, setSearchQuery] = useState({ from: null, to: null });
+  const [searchQuery, setSearchQuery] = useState({ from: "", to: "" });
+  const navigate = useNavigate();
+
   const updateSearchQuery = (key) => (value) => {
-    setSearchQuery((prev) => ({ ...prev, [key]: value }));
+    setSearchQuery((prev) => ({ ...prev, [key]: value._id })); // use _id for query
   };
-  useEffect(() => {
-    console.log(searchQuery);
-  }, [searchQuery]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate({
+      pathname: "/results",
+      search: createSearchParams(searchQuery).toString(),
+    });
+  };
+
   return (
-    <form className="flex flex-col w-full p-m rounded-lg bg-silver-gray gap-m">
+    <form
+      className="flex flex-col w-full p-m rounded-lg bg-silver-gray gap-m"
+      onSubmit={handleSubmit}
+    >
       <AutocompleteInput
         options={hardcodedLocations}
         getOptionLabel={(option) => option.name}
@@ -64,7 +75,8 @@ const Search = () => {
         onChange={updateSearchQuery("to")}
       />
       <Button
-        disabled={searchQuery.from === null || searchQuery.to === null}
+        disabled={searchQuery.from === "" || searchQuery.to === ""}
+        type="submit"
         className="u-mainButton bg-bright-red text-white disabled:opacity-20 disabled:border-none"
       >
         GO
