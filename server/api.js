@@ -23,6 +23,7 @@ const socketManager = require("./server-socket");
 
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
+router.post("/exchange-token", auth.exchangeToken);
 router.get("/whoami", (req, res) => {
   if (!req.user) {
     // not logged in

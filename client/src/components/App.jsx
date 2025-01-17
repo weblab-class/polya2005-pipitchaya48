@@ -28,8 +28,16 @@ const App = () => {
     });
   }, []);
 
+  const handleCustomLogin = ({code}) => {
+    console.log(code);
+    post("/api/exchange-token", { code }).then((tokens) => {
+      handleLogin({credential: tokens.id_token});
+    });
+  }
+
   const handleLogin = (credentialResponse) => {
     const userToken = credentialResponse.credential;
+    console.log(userToken);
     const decodedCredential = jwt_decode(userToken);
     console.log(`Logged in as ${decodedCredential.name}`);
     post("/api/login", { token: userToken }).then((user) => {
@@ -45,6 +53,7 @@ const App = () => {
 
   const authContextValue = {
     user,
+    handleCustomLogin,
     handleLogin,
     handleLogout,
   };
