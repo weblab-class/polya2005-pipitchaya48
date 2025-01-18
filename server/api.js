@@ -95,6 +95,48 @@ router.post("/hardcoded-locations-import", (req, res) => {
   res.send(`${newLocation.name} added.`);
 });
 
+// get accessible locations _id & names
+router.get("/location-names", (req, res) => {
+  let locationsList = [];
+  // hardcoded locations
+  Location.find({ hardCoded: true })
+    .then((hardcodedLocations) => {
+      locationsList = hardcodedLocations;
+    })
+    .then((hardcodedLocations) => {
+      // user's saved locations
+      if (req.user) {
+        User.findById(req.user._id).then((user) => {
+          locationsList = user.savedPlaces.concat(locationsList);
+          req.session.locations = locationsList; // share this locations list with all endpoints
+          res.send(
+            locationsList.map((hardcodedLocation) => ({
+              _id: hardcodedLocation._id,
+              name: hardcodedLocation.name,
+            }))
+          );
+        });
+      } else {
+        res.send(locationsList);
+      }
+    });
+});
+
+// TO-DO: get location coords from _id
+router.get("/location-coords", (req, res) => {
+  // const desiredLocation = req.session.locations.find(
+  //   (location) => location._id === req.body.locationId
+  // );
+  res.send({
+    latitude: 5,
+    longitude: 6,
+  });
+});
+
+// TO-DO: post new locations
+
+// TO-DO: get route from start to destination
+
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
   console.log(`API route not found: ${req.method} ${req.url}`);

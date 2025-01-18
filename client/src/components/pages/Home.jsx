@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createSearchParams, useNavigate } from "react-router-dom";
 import AutocompleteInput from "../modules/AutocompleteInput";
 import { Input, Button } from "@mui/base";
@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import "./Home.css";
 import "../../utilities.css";
 
-import { post } from "../../utilities";
+import { get, post } from "../../utilities";
 
 const hardcodedLocations = [
   { _id: "1", name: "1" },
@@ -65,6 +65,7 @@ const handleImport = () => {
  */
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState({ from: "", to: "" });
+  const [locations, setLocations] = useState(null);
   const navigate = useNavigate();
 
   const updateSearchQuery = (key) => (value) => {
@@ -79,19 +80,33 @@ const Search = () => {
     });
   };
 
-  return (
+  // fetch all locations
+  useEffect(() => {
+    let accessibleLocations = [];
+    get("/api/location-names").then((locationsList) => {
+      accessibleLocations = locationsList;
+      // GPS utility
+      accessibleLocations.unshift({
+        _id: null,
+        name: "Your Location",
+      });
+      setLocations(accessibleLocations);
+    });
+  }, []);
+
+  return locations ? (
     <form
       className="flex flex-col w-full p-m rounded-lg bg-silver-gray gap-m"
       onSubmit={handleSubmit}
     >
       <AutocompleteInput
-        options={hardcodedLocations}
+        options={locations}
         getOptionLabel={(option) => option.name}
         inputLabelText="Going from"
         onChange={updateSearchQuery("from")}
       />
       <AutocompleteInput
-        options={hardcodedLocations}
+        options={locations}
         getOptionLabel={(option) => option.name}
         inputLabelText="Going to"
         onChange={updateSearchQuery("to")}
@@ -104,6 +119,8 @@ const Search = () => {
         GO
       </Button>
     </form>
+  ) : (
+    <p>Loading Locations...</p>
   );
 };
 
