@@ -13,7 +13,7 @@ export const ProfileCard = ({ user }) => {
         src={user?.picture || "https://www.gravatar.com/avatar/"}
         className="block rounded-full h-32"
       />
-      <h1 className="text-3xl">{user?.name || "Guest"}</h1>
+      <h1 className="text-3xl text-center">{user?.name || "Guest"}</h1>
     </div>
   );
 };
