@@ -1,5 +1,5 @@
 import React from "react";
-import { ChevronRight } from "@mui/icons-material";
+import { CheckOutlined, ChevronRight } from "@mui/icons-material";
 import { Switch } from "./Switch";
 
 export const MenuList = ({ children }) => {
@@ -35,11 +35,11 @@ export const MenuListItem = ({ children, onClick, className }) => {
   );
 };
 
-export const MenuListSwitch = ({ children, onChange, className, check }) => {
+export const MenuListSwitch = ({ children, onChange, className, checked }) => {
   return (
     <div className="flex items-center justify-between p-s">
       <div className={className}>{children}</div>
-      <Switch check={check} onChange={onChange} />
+      <Switch checked={checked} onChange={onChange} />
     </div>
   );
 };

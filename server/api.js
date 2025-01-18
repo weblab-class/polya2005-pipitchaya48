@@ -63,6 +63,20 @@ router.post("/navigation-settings", (req, res) => {
         res.status(400).send(`The field ${field} is not valid`);
       }
     });
+  } else {
+    res.send(req.body.value);
+  }
+});
+
+// get current navigation settings
+router.get("/navigation-setting", (req, res) => {
+  // logged in
+  if (req.user) {
+    User.findById(req.user._id).then((user) => {
+      res.send(user.navsettings);
+    });
+  } else {
+    res.send(null);
   }
 });
 
