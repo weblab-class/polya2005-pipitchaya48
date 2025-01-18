@@ -35,8 +35,9 @@ const auth = require("./auth");
 const socketManager = require("./server-socket");
 
 // Server configuration below
-const mongoConnectionURL = process.env.mongoURL;
-const databaseName = process.env.dbName;
+const mongoConnectionURL =
+  "mongodb+srv://pipitchayas48692:pKrRtfhHbiQ5Pyf8@cluster0.zne9e.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const databaseName = "Cluster0";
 
 // mongoose 7 warning
 mongoose.set("strictQuery", false);
@@ -61,7 +62,7 @@ app.use(express.json());
 // set up a session, which will persist login data across requests
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: "session secret",
     resave: false,
     saveUninitialized: false,
   })
@@ -82,7 +83,9 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(reactPath, "index.html"), (err) => {
     if (err) {
       console.log("Error sending client/dist/index.html:", err.status || 500);
-      res.status(err.status || 500).send("Error sending client/dist/index.html - have you run `npm run build`?");
+      res
+        .status(err.status || 500)
+        .send("Error sending client/dist/index.html - have you run `npm run build`?");
     }
   });
 });

@@ -3,15 +3,15 @@ const User = require("./models/user");
 const socketManager = require("./server-socket");
 
 // create a new OAuth client used to verify google sign-in
-const CLIENT_ID = "105463250048-ijbj257fhgd9gtlrp1lpoa1ffnklsfn1.apps.googleusercontent.com";
-const client = new OAuth2Client(CLIENT_ID, process.env.CLIENT_SECRET, "postmessage");
+const CLIENT_ID = "884615792154-63asahc9uepm1aflp9rvq7sq12pm1cg8.apps.googleusercontent.com";
+const client = new OAuth2Client(CLIENT_ID);
 
 // accepts a login token from the frontend, and verifies that it's legit
 function verify(token) {
   return client
     .verifyIdToken({
       idToken: token,
-      audience: CLIENT_ID,
+      requiredAudience: CLIENT_ID, // Sprite - changed the name of the parameter from 'audience' to 'requiredAudience'
     })
     .then((ticket) => ticket.getPayload());
 }
@@ -26,6 +26,12 @@ function getOrCreateUser(user) {
       name: user.name,
       picture: user.picture,
       googleid: user.sub,
+      navsettings: new NavSetting({
+        avoidGrass: true,
+        stayIndoor: true,
+      }),
+      savedPlaces: [],
+      history: [],
     });
 
     return newUser.save();

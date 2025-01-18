@@ -44,6 +44,28 @@ router.post("/initsocket", (req, res) => {
 // | write your API methods below!|
 // |------------------------------|
 
+// save change of navigation settings
+router.post("/navigation-settings", (req, res) => {
+  // logged in
+  if (req.user) {
+    const field = req.body.field;
+    User.findById(req.user._id).then((user) => {
+      const navsettings = user.navsettings;
+      if (field === "avoidGrass") {
+        navsettings.avoidGrass = req.body.value;
+        user.save();
+        res.send(req.body.value);
+      } else if (field === "stayIndoor") {
+        navsettings.stayIndoor = req.body.value;
+        user.save();
+        res.send(req.body.value);
+      } else {
+        res.status(400).send(`The field ${field} is not valid`);
+      }
+    });
+  }
+});
+
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
   console.log(`API route not found: ${req.method} ${req.url}`);

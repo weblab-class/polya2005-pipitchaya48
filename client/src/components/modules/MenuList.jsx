@@ -25,18 +25,21 @@ export const MenuList = ({ children }) => {
  */
 export const MenuListItem = ({ children, onClick, className }) => {
   return (
-    <div onClick={onClick} className="flex items-center justify-between p-s hover:bg-gray-100 cursor-pointer">
+    <div
+      onClick={onClick}
+      className="flex items-center justify-between p-s hover:bg-gray-100 cursor-pointer"
+    >
       <div className={className}>{children}</div>
       <ChevronRight />
     </div>
   );
 };
 
-export const MenuListSwitch = ({ children, onChange, className }) => {
+export const MenuListSwitch = ({ children, onChange, className, check }) => {
   return (
     <div className="flex items-center justify-between p-s">
       <div className={className}>{children}</div>
-      <Switch onChange={onChange} />
+      <Switch check={check} onChange={onChange} />
     </div>
-  )
-}
+  );
+};
