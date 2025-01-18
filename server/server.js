@@ -35,9 +35,8 @@ const auth = require("./auth");
 const socketManager = require("./server-socket");
 
 // Server configuration below
-const mongoConnectionURL =
-  "mongodb+srv://pipitchayas48692:pKrRtfhHbiQ5Pyf8@cluster0.zne9e.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-const databaseName = "Cluster0";
+const mongoConnectionURL = process.env.mongoURL;
+const databaseName = process.env.dbName;
 
 // mongoose 7 warning
 mongoose.set("strictQuery", false);
@@ -60,13 +59,7 @@ app.use(validator.checkRoutes);
 app.use(express.json());
 
 // set up a session, which will persist login data across requests
-app.use(
-  session({
-    secret: "session secret",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
+app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
 
 // this checks if the user is logged in, and populates "req.user"
 app.use(auth.populateCurrentUser);
