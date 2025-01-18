@@ -18,7 +18,7 @@ export const Switch = ({ slotProps, ...props }) => {
           return {
             ...resolvedSlotProps,
             className: clsx(
-              `group relative inline-block w-9 h-l m-2.5 ${
+              `group relative inline-block w-9 h-l ${
                 ownerState.disabled ? "cursor-not-allowed opacity-40" : "cursor-pointer"
               }`,
               resolvedSlotProps?.className
