@@ -11,6 +11,7 @@ const express = require("express");
 
 // import models so we can interact with the database
 const User = require("./models/user");
+const Location = require("./models/location");
 
 // import authentication library
 const auth = require("./auth");
@@ -78,6 +79,20 @@ router.get("/navigation-setting", (req, res) => {
   } else {
     res.send(null);
   }
+});
+
+// import hardcoded locations to the database
+router.post("/hardcoded-locations-import", (req, res) => {
+  const newLocation = new Location({
+    name: req.body.name,
+    latitude: req.body.latitude,
+    longitude: req.body.longitude,
+    hardCoded: true,
+  });
+
+  newLocation.save();
+
+  res.send(`${newLocation.name} added.`);
 });
 
 // anything else falls to this "not found" case

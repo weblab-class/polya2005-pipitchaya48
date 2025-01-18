@@ -9,6 +9,8 @@ import { motion } from "framer-motion";
 import "./Home.css";
 import "../../utilities.css";
 
+import { post } from "../../utilities";
+
 const hardcodedLocations = [
   { _id: "1", name: "1" },
   { _id: "2", name: "32 (Stata Center)" },
@@ -37,6 +39,26 @@ const hardcodedLocations = [
   { _id: "25", name: "E52" },
   { _id: "26", name: "E62" },
 ];
+
+// Call this function to exports the hardcoded locations to the database
+// Then delete the locaitons list above.
+const handleImport = () => {
+  for (let i = 0; i < hardcodedLocations.length; i++) {
+    const currentLocation = hardcodedLocations[i];
+    const dummyLatAndLong = 0;
+    post("/api/hardcoded-locations-import", {
+      name: currentLocation.name,
+      latitude: currentLocation.latitude || dummyLatAndLong,
+      longitude: currentLocation.longitude || dummyLatAndLong,
+    })
+      .then((msg) => {
+        console.log(msg);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+};
 
 /**
  * Home page component
