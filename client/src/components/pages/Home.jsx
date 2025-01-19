@@ -86,10 +86,12 @@ const Search = () => {
     get("/api/location-names").then((locationsList) => {
       accessibleLocations = locationsList;
       // GPS utility
-      accessibleLocations.unshift({
-        _id: "GPS",
-        name: "Your Location",
-      });
+      if (navigator.geolocation) {
+        accessibleLocations.unshift({
+          _id: null,
+          name: "Your Location",
+        });
+      }
       setLocations(accessibleLocations);
     });
   }, []);

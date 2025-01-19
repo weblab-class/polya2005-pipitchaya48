@@ -23,6 +23,9 @@ const router = express.Router();
 const socketManager = require("./server-socket");
 const session = require("express-session");
 
+// import algorithms
+const getRoute = require("./route");
+
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
 router.post("/exchange-token", auth.exchangeToken);
@@ -124,20 +127,38 @@ router.get("/location-names", (req, res) => {
     });
 });
 
-// TO-DO: get location coords from _id
 router.get("/location-coords", (req, res) => {
-  // const desiredLocation = req.session.locations.find(
-  //   (location) => location._id === req.body.locationId
-  // );
-  res.send({
-    latitude: 5,
-    longitude: 6,
+  Location.findById(req.query.locationId).then((location) => {
+    if (location) {
+      res.send({
+        latitude: location.latitude,
+        longitude: location.longitude,
+      });
+    } else {
+      // TO-DO: test this with real saved Data
+      User.findById(req.user._id).then((user) => {
+        const desiredLocation = user.savedPlaces.find(
+          (location) => location._id === req.query.locationId
+        );
+        res.send({
+          latitude: desiredLocation.latitude,
+          longitude: desiredLocation.longitude,
+        });
+      });
+    }
   });
 });
 
 // TO-DO: post new locations
 
 // TO-DO: get route from start to destination
+router.get("/route", (req, res) => {
+  Location.findById(req.query.startId).then((start) => {
+    Location.findById(req.query.endId).then((end) => {
+      res.send(getRoute(start.name, end.name));
+    });
+  });
+});
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
