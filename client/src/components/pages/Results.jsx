@@ -1,22 +1,46 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup, CircleMarker, useMap } from "react-leaflet";
-import { circleMarker, polyline } from "leaflet";
+import { circleMarker, polyline, marker as mapMarker } from "leaflet";
 
 import { get, coordinatesToArray } from "../../utilities";
 import "../../utilities.css";
 
 const RouteUpdater = ({ route }) => {
   const map = useMap();
-  Promise.all(
-    route.map((locationId) => get("/api/location-coords", { locationId: locationId }))
-  ).then((coords) => {
-    console.log(coords);
-    coords = coords.map((coord)=>coordinatesToArray(coord));
-    coords.map((coord) => {
-      map.addLayer(circleMarker(coord, { radius: 3 }));
+  const numCoords = route.length;
+  const coordinatesPromise = (locationId) =>
+    get("/api/location-coords", { locationId: locationId });
+  Promise.all(route.slice(1, numCoords - 1).map(coordinatesPromise)).then((coords) => {
+    coordinatesPromise(route[0]).then((startCoords) => {
+      coordinatesPromise(route[numCoords - 1]).then((endCoords) => {
+        coords = [startCoords, ...coords, endCoords].map((coord) => coordinatesToArray(coord));
+        coords.map((coord, index) => {
+          let marker;
+          switch (index) {
+            case 0:
+              marker = circleMarker(coord, {
+                radius: 10,
+                color: "#750014",
+              });
+              break;
+            case numCoords - 1:
+              marker = mapMarker(coord, { color: "#8b959e" });
+              break;
+            default:
+              marker = circleMarker(coord, {
+                radius: 5,
+                stroke: false,
+                fillOpacity: 1,
+                color: "#8b959e",
+              });
+              break;
+          }
+          map.addLayer(marker);
+        });
+        map.addLayer(polyline(coords, { color: "#8b959e" }));
+      });
     });
-    map.addLayer(polyline(coords, { color: "red" }));
   });
   return null;
 };
@@ -92,11 +116,6 @@ export const Results = () => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker position={[42.360058, -71.088678]}>
-        <Popup>
-          A pretty CSS3 popup. <br /> Easily customizable.
-        </Popup>
-      </Marker>
       <RouteUpdater route={route} />
     </MapContainer>
   );
