@@ -95,7 +95,7 @@ router.post("/hardcoded-locations-import", (req, res) => {
 
   newLocation.save();
 
-  res.send({message: `${newLocation.name} added.`});
+  res.send({ message: `${newLocation.name} added.` });
 });
 
 // get accessible locations _id & names
