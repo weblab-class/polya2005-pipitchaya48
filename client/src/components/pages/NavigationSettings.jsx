@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { MenuList, MenuListSwitch } from "../modules/MenuList";
 import { SettingsHeading } from "../modules/SettingsHeading";
 import { get, post } from "../../utilities";
+import _ from "underscore";
 
 export const NavigationSettings = () => {
   const [navSet, setNavSet] = useState({
@@ -13,7 +14,7 @@ export const NavigationSettings = () => {
   useEffect(() => {
     get("/api/navigation-setting").then((data) => {
       if (data !== null) {
-        setNavSet(data);
+        setNavSet(_.extend({...navSet}, data));
       }
     });
   }, []);

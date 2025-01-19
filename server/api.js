@@ -21,6 +21,7 @@ const router = express.Router();
 
 //initialize socket
 const socketManager = require("./server-socket");
+const session = require("express-session");
 
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
@@ -65,6 +66,7 @@ router.post("/navigation-settings", (req, res) => {
       }
     });
   } else {
+    session.navsettings = { ...session.navsettings, [req.body.field]: req.body.value };
     res.send(req.body.value);
   }
 });
@@ -77,7 +79,7 @@ router.get("/navigation-setting", (req, res) => {
       res.send(user.navsettings);
     });
   } else {
-    res.send({});
+    res.send(session.navsettings || {});
   }
 });
 
