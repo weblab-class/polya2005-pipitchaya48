@@ -1,5 +1,5 @@
 const { OAuth2Client } = require("google-auth-library");
-const User = require("./models/user");
+const {User, NavSettings} = require("./models/user");
 const socketManager = require("./server-socket");
 
 // create a new OAuth client used to verify google sign-in
@@ -26,7 +26,7 @@ function getOrCreateUser(user) {
       name: user.name,
       picture: user.picture,
       googleid: user.sub,
-      navsettings: new NavSetting({
+      navsettings: new NavSettings({
         avoidGrass: true,
         stayIndoor: true,
       }),

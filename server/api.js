@@ -10,7 +10,7 @@
 const express = require("express");
 
 // import models so we can interact with the database
-const User = require("./models/user");
+const { User } = require("./models/user");
 const Location = require("./models/location");
 
 // import authentication library
