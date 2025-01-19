@@ -82,9 +82,7 @@ function ensureLoggedIn(req, res, next) {
 }
 
 function exchangeToken(req, res) {
-  console.log(req.body.code);
   client.getToken(req.body.code).then(({ tokens }) => {
-    console.log(tokens);
     res.send(tokens);
   });
 }

@@ -87,7 +87,7 @@ const Search = () => {
       accessibleLocations = locationsList;
       // GPS utility
       accessibleLocations.unshift({
-        _id: null,
+        _id: "GPS",
         name: "Your Location",
       });
       setLocations(accessibleLocations);
