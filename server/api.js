@@ -77,7 +77,7 @@ router.get("/navigation-setting", (req, res) => {
       res.send(user.navsettings);
     });
   } else {
-    res.send(null);
+    res.send({});
   }
 });
 
