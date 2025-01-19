@@ -124,12 +124,24 @@ router.get("/location-names", (req, res) => {
 
 // TO-DO: get location coords from _id
 router.get("/location-coords", (req, res) => {
-  // const desiredLocation = req.session.locations.find(
-  //   (location) => location._id === req.body.locationId
-  // );
-  res.send({
-    latitude: 5,
-    longitude: 5,
+  Location.findById(req.query.locationId).then((location) => {
+    if (location) {
+      res.send({
+        latitude: location.latitude,
+        longitude: location.longitude,
+      });
+    } else {
+      // TO-DO: test this with real saved Data
+      User.findById(req.user._id).then((user) => {
+        const desiredLocation = user.savedPlaces.find(
+          (location) => location._id === req.query.locationId
+        );
+        res.send({
+          latitude: desiredLocation.latitude,
+          longitude: desiredLocation.longitude,
+        });
+      });
+    }
   });
 });
 

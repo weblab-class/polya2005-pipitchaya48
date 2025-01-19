@@ -13,7 +13,7 @@ export const Results = () => {
 
   const setCoordsFromLocation = (locationId, setStateCallback) => {
     // use GPS location
-    if (locationId === null) {
+    if (locationId === "null") {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
@@ -45,8 +45,12 @@ export const Results = () => {
   return (
     <div>
       Results for {searchParams.get("from")} to {searchParams.get("to")}
-      <p>latitude: {startCoords.latitude}</p>
-      <p>latitude: {endCoords.latitude}</p>
+      <p>
+        Start: latitude {startCoords.latitude}, longitude {startCoords.longitude}
+      </p>
+      <p>
+        End: latitude {endCoords.latitude}, longitude {endCoords.longitude}
+      </p>
     </div>
   );
 };
