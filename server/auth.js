@@ -1,5 +1,5 @@
 const { OAuth2Client } = require("google-auth-library");
-const {User, NavSettings} = require("./models/user");
+const { User, NavSettings } = require("./models/user");
 const socketManager = require("./server-socket");
 
 // create a new OAuth client used to verify google sign-in
@@ -20,7 +20,17 @@ function verify(token) {
 function getOrCreateUser(user) {
   // the "sub" field means "subject", which is a unique identifier for each user
   return User.findOne({ googleid: user.sub }).then((existingUser) => {
-    if (existingUser) return existingUser;
+    if (existingUser) {
+      if (!existingUser.navsettings) {
+        User.updateOne(
+          { googleid: user.sub },
+          { $set: { navsettings: new NavSettings({ avoidGrass: true, stayIndoor: true }) } }
+        ).then(() => {
+          console.log("Updated user with missing navsettings");
+        });
+      }
+      return existingUser;
+    }
 
     const newUser = new User({
       name: user.name,
