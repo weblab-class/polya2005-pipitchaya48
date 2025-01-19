@@ -102,9 +102,8 @@ module.exports = {
 const mongoose = require("mongoose");
 
 // Server configuration below
-const mongoConnectionURL =
-  "mongodb+srv://pipitchayas48692:pKrRtfhHbiQ5Pyf8@cluster0.zne9e.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-const databaseName = "Cluster0";
+const mongoConnectionURL = process.env.mongoURL;
+const databaseName = process.env.dbName;
 
 // mongoose 7 warning
 mongoose.set("strictQuery", false);
@@ -121,20 +120,7 @@ mongoose
 
 const Location = require("./models/location");
 
-const changeObj = [
-  { target: "1", id: "678c11a37b6b2c3edc90fbe8" },
-  { target: "4", id: "678c91c1b01808abdd6c1145" },
-  { target: "5", id: "678c91c1b01808abdd6c1146" },
-  { target: "6", id: "678c91c1b01808abdd6c1147" },
-  { target: "7", id: "678c91c1b01808abdd6c1148" },
-  { target: "8", id: "678c91c1b01808abdd6c1149" },
-  { target: "3", id: "678c91c1b01808abdd6c1144" },
-  { target: "10", id: "678c13967b6b2c3edc90fbf4" },
-  { target: "2", id: "678c9168573877f0bc3923fd" },
-  { target: "9", id: "678c91c1b01808abdd6c114a" },
-  { target: "6b", id: "678c9529999562e4792ee72d" },
-  { target: "6c", id: "678c956c65049d94833c8edb" },
-];
+const changeObj = [];
 
 // NEXT: change building names to Ids in .json
 const toCall = (target) => {
@@ -187,6 +173,4 @@ const toCall4 = () => {
   }
   console.log(newNeighbors);
 };
-
-toCall4();
 */
