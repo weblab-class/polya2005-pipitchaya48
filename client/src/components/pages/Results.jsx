@@ -56,8 +56,6 @@ export const Results = () => {
     }
   }, []);
 
-  console.log(route);
-
   return (
     <div>
       Results for {searchParams.get("from")} to {searchParams.get("to")}

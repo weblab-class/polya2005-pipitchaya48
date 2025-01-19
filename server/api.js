@@ -149,13 +149,9 @@ router.get("/location-coords", (req, res) => {
 
 // TO-DO: post new locations
 
-// TO-DO: get route from start to destination
+// get route from start to destination
 router.get("/route", (req, res) => {
-  Location.findById(req.query.startId).then((start) => {
-    Location.findById(req.query.endId).then((end) => {
-      res.send(routeJs.getRoute(start.name, end.name));
-    });
-  });
+  res.send(routeJs.getRoute(req.query.startId, req.query.endId));
 });
 
 // report a route
