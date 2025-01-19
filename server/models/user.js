@@ -15,4 +15,7 @@ const UserSchema = new mongoose.Schema({
 });
 
 // compile model from schema
-module.exports = [mongoose.model("user", UserSchema), mongoose.model("navsettings", NavSettingsSchema)];
+module.exports = {
+  User: mongoose.model("user", UserSchema),
+  NavSettings: mongoose.model("navsettings", NavSettingsSchema),
+};
