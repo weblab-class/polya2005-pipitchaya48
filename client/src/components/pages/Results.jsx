@@ -131,7 +131,6 @@ export const Results = () => {
   return (
     <div className="h-full w-full flex flex-col items-center justify-center flex-auto">
       Results for {searchParams.get("from")} to {searchParams.get("to")}
-      <p>{route}</p>
       {map}
     </div>
   );
