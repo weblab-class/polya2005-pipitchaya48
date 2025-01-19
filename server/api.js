@@ -22,6 +22,9 @@ const router = express.Router();
 //initialize socket
 const socketManager = require("./server-socket");
 
+// import algorithms
+const getRoute = require("./route");
+
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
 router.post("/exchange-token", auth.exchangeToken);
@@ -122,7 +125,6 @@ router.get("/location-names", (req, res) => {
     });
 });
 
-// TO-DO: get location coords from _id
 router.get("/location-coords", (req, res) => {
   Location.findById(req.query.locationId).then((location) => {
     if (location) {
@@ -148,6 +150,13 @@ router.get("/location-coords", (req, res) => {
 // TO-DO: post new locations
 
 // TO-DO: get route from start to destination
+router.get("/route", (req, res) => {
+  Location.findById(req.query.startId).then((start) => {
+    Location.findById(req.query.endId).then((end) => {
+      res.send(getRoute(start.name, end.name));
+    });
+  });
+});
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {

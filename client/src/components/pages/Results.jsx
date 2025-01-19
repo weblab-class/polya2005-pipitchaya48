@@ -5,9 +5,11 @@ import { get } from "../../utilities";
 
 export const Results = () => {
   const [searchParams] = useSearchParams();
+  const [route, setRoute] = useState(null);
   const startLocationId = searchParams.get("from");
   const endLocationId = searchParams.get("to");
 
+  /* get locations
   const [startCoords, setStartCoords] = useState({});
   const [endCoords, setEndCoords] = useState({});
 
@@ -40,17 +42,25 @@ export const Results = () => {
   useEffect(() => {
     setCoordsFromLocation(startLocationId, setStartCoords);
     setCoordsFromLocation(endLocationId, setEndCoords);
+  }, []); */
+
+  // get Route
+  useEffect(() => {
+    if (startLocationId === "null" || endLocationId === "null") {
+      setRoute([1, 2, 3]); // to be changed
+    } else {
+      get("/api/route", { startId: startLocationId, endId: endLocationId }).then((route) => {
+        setRoute(route);
+      });
+    }
   }, []);
+
+  console.log(route);
 
   return (
     <div>
       Results for {searchParams.get("from")} to {searchParams.get("to")}
-      <p>
-        Start: latitude {startCoords.latitude}, longitude {startCoords.longitude}
-      </p>
-      <p>
-        End: latitude {endCoords.latitude}, longitude {endCoords.longitude}
-      </p>
+      <p>{route}</p>
     </div>
   );
 };
