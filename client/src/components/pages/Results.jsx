@@ -14,7 +14,21 @@ export const Results = () => {
   const setCoordsFromLocation = (locationId, setStateCallback) => {
     // use GPS location
     if (locationId === null) {
-      setStateCallback({ latitude: 0, longitude: 0 });
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            setStateCallback({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            });
+          },
+          (err) => {
+            console.log(`Error retreiving location: ${err}`);
+          }
+        );
+      } else {
+        console.log("GPS is not supported.");
+      }
     } else {
       get("/api/location-coords", { locationId: locationId }).then((coords) => {
         setStateCallback(coords);
@@ -31,8 +45,8 @@ export const Results = () => {
   return (
     <div>
       Results for {searchParams.get("from")} to {searchParams.get("to")}
-      <p>{startCoords.latitude || "Loading..."}</p>
-      <p>{endCoords.latitude || "Loading..."}</p>
+      <p>latitude: {startCoords.latitude}</p>
+      <p>latitude: {endCoords.latitude}</p>
     </div>
   );
 };

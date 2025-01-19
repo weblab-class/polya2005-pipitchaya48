@@ -129,7 +129,7 @@ router.get("/location-coords", (req, res) => {
   // );
   res.send({
     latitude: 5,
-    longitude: 6,
+    longitude: 5,
   });
 });
 
