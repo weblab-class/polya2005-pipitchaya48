@@ -24,7 +24,7 @@ const socketManager = require("./server-socket");
 const session = require("express-session");
 
 // import algorithms
-const getRoute = require("./route");
+const routeJs = require("./route");
 
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
@@ -149,13 +149,21 @@ router.get("/location-coords", (req, res) => {
 
 // TO-DO: post new locations
 
-// TO-DO: get route from start to destination
+// get route from start to destination
 router.get("/route", (req, res) => {
-  Location.findById(req.query.startId).then((start) => {
-    Location.findById(req.query.endId).then((end) => {
-      res.send(getRoute(start.name, end.name));
-    });
-  });
+  res.send(routeJs.getRoute(req.query.startId, req.query.endId));
+});
+
+// report a route
+router.post("/report", (req, res) => {
+  const reportId = routeJs.reportRoute(req.body.node1, req.body.node2);
+  res.send(reportId);
+});
+
+// unreport the earliest reported route
+router.get("/unreport-route", (req, res) => {
+  routeJs.shiftRoute();
+  res.send("Unreport successfully");
 });
 
 // anything else falls to this "not found" case

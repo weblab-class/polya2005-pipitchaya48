@@ -62,7 +62,8 @@ export const Results = () => {
     setCoordsFromLocation(endLocationId, setEndCoords);
   }, []); */
 
-  // get Route
+  // fetch Route
+  // TO-DO estimate nearest point from GPS location
   useEffect(() => {
     if (startLocationId === "null" || endLocationId === "null") {
       setRoute([
