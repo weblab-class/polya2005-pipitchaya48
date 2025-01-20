@@ -17,6 +17,7 @@ import { Settings } from "./components/pages/Settings";
 import { NavigationSettings } from "./components/pages/NavigationSettings";
 import { SavedPlaces } from "./components/pages/SavedPlaces";
 import { History } from "./components/pages/History";
+import { Report } from "./components/pages/Report";
 
 const GOOGLE_CLIENT_ID = "105463250048-ijbj257fhgd9gtlrp1lpoa1ffnklsfn1.apps.googleusercontent.com";
 
@@ -29,6 +30,7 @@ const router = createBrowserRouter(
       <Route path="/settings/navigation" element={<NavigationSettings />} />
       <Route path="/settings/saved-places" element={<SavedPlaces />} />
       <Route path="/settings/history" element={<History />} />
+      <Route path="/report" element={<Report />} />
     </Route>
   )
 );
