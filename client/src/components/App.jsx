@@ -6,7 +6,6 @@ import { ApiProvider } from "./hooks/ApiContext";
 import jwt_decode from "jwt-decode";
 
 import "../utilities.css";
-import "../theme.css";
 
 import { socket } from "../client-socket";
 
