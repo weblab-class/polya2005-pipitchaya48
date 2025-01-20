@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect} from "react";
 import { useSearchParams } from "react-router-dom";
-import { MapContainer, TileLayer, Marker, Popup, CircleMarker } from "react-leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 
 import { get } from "../../utilities";
 import "../../utilities.css";
