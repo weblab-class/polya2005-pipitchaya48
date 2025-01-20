@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { useGoogleLogin, GoogleLogin, googleLogout } from "@react-oauth/google";
+import { useGoogleLogin, googleLogout } from "@react-oauth/google";
 
 import { ProfileCard } from "../modules/ProfileCard";
 import { MenuList, MenuListItem } from "../modules/MenuList";
