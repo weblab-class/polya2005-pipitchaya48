@@ -126,6 +126,8 @@ router.get("/location-names", (req, res) => {
 });
 
 router.get("/location-coords", (req, res) => {
+  console.log("location-coords API received");
+  console.log(req.query);
   Location.findById(req.query.locationId).then((location) => {
     if (location) {
       res.send({

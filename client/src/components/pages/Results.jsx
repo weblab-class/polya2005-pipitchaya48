@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { get } from "../../utilities";
@@ -8,7 +8,7 @@ import { BaseMap } from "../modules/BaseMap";
 
 export const Results = () => {
   const [searchParams] = useSearchParams();
-  const [route, setRoute] = useState([]);
+  const [route, setRoute] = useState(null); // use null here to add loading screen
   const startLocationId = searchParams.get("from");
   const endLocationId = searchParams.get("to");
 
@@ -57,18 +57,26 @@ export const Results = () => {
         "678c8b6e1140d591427ba320",
       ]); // to be changed
     } else {
-      get("/api/route", { startId: startLocationId, endId: endLocationId }).then((route) => {
-        setRoute(route);
-      });
+      get("/api/route", { startId: startLocationId, endId: endLocationId })
+        .then((route) => {
+          setRoute(route);
+        })
+        .catch((err) => {
+          console.log(`error at route API: ${err}`);
+        });
     }
   }, []);
 
   console.log(route);
+  console.log(route === null);
 
-  const map = (
+  // added loading screen if route is not fetched
+  const map = route ? (
     <BaseMap route={route}>
       <RouteUpdater route={route} />
     </BaseMap>
+  ) : (
+    <p>Loading...</p>
   );
 
   return (

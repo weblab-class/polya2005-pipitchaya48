@@ -20,7 +20,11 @@ const apiReducer = (state, action) => {
 };
 
 export const ApiProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(apiReducer, { route: null, locations: null, coordinates: {} });
+  const [state, dispatch] = useReducer(apiReducer, {
+    route: null,
+    locations: null,
+    coordinates: {},
+  });
 
   return (
     <ApiStateContext.Provider value={state}>

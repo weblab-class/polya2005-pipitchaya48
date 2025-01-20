@@ -4,6 +4,7 @@ import { useMap } from "react-leaflet";
 import { useApiState, useApiDispatch, fetchCoordinates } from "../hooks/ApiContext";
 
 export const RouteUpdater = ({ route }) => {
+  console.log(route);
   const map = useMap();
   const numCoords = route.length;
   const { coordinates } = useApiState();
@@ -12,6 +13,7 @@ export const RouteUpdater = ({ route }) => {
   useEffect(() => {
     const updateRoute = async () => {
       const fetchCoord = async (locationId) => {
+        console.log(`fetchCoord w/ locationId: ${locationId}`);
         if (!coordinates[locationId]) {
           await fetchCoordinates(dispatch, locationId);
         }
