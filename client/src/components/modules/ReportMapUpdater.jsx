@@ -1,8 +1,7 @@
 import { circleMarker, polyline, canvas } from "leaflet";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useMap } from "react-leaflet";
 import { useApiState, useApiDispatch, fetchLocations } from "../hooks/ApiContext";
-
 
 const routeSegmentRenderer = canvas({ padding: 0.5, tolerance: 5 });
 
@@ -35,10 +34,8 @@ class RouteSegment {
   #onDeselect;
   /** @type {boolean} */
   #selected;
-
   /** @type {L.Map} */
   #map;
-  
   /** @type {L.Polyline} */
   #line;
 
@@ -81,6 +78,10 @@ class RouteSegment {
       .addTo(this.#map);
   }
 
+  equals(other) {
+    return this.start._id === other.start._id && this.end._id === other.end._id;
+  }
+
   /** @param {(RouteSegment) => void} callback  */
   onSelect(callback) {
     this.#onSelect = callback;
@@ -97,10 +98,16 @@ class RouteSegment {
 /**
  * @param {(routeSegments: RouteSegment[]) => void} onChange
  */
-export const ReportMapUpdater = ({ onChange }) => {
+export const ReportMapUpdater = ({ onChange = (routeSegments) => {} }) => {
   const map = useMap();
   const { locations } = useApiState();
   const dispatch = useApiDispatch();
+  const [reportList, setReportList] = useState([]);
+
+  useEffect(() => {
+    console.log(reportList);
+    onChange(reportList);
+  }, [reportList]);
 
   useEffect(() => {
     const updateReportMap = async () => {
@@ -112,9 +119,11 @@ export const ReportMapUpdater = ({ onChange }) => {
         map.addLayer(nodeMarker(location));
       });
 
-        new RouteSegment(locations[0], locations[1])
-          .onSelect((route) => console.log(`Selected ${route}`))
-          .onDeselect((route) => console.log(`Deselected ${route}`)).addTo(map);
+      // TODO: get route segments from the server
+      new RouteSegment(locations[0], locations[1])
+        .onSelect((route) => setReportList([...reportList, route]))
+        .onDeselect((route) => setReportList(reportList.filter((r) => !r.equals(route))))
+        .addTo(map);
     };
 
     updateReportMap();
