@@ -52,9 +52,9 @@ export const Results = () => {
   useEffect(() => {
     if (startLocationId === "null" || endLocationId === "null") {
       setRoute([
-        "678c8bbc1140d591427ba321",
-        "678c8b0d1140d591427ba31f",
-        "678c8b6e1140d591427ba320",
+        "678e8d67141b2290313bcebf",
+        "678e8d68141b2290313bcecf",
+        "678e8d68141b2290313bced5",
       ]); // to be changed
     } else {
       get("/api/route", { startId: startLocationId, endId: endLocationId }).then((route) => {
@@ -66,7 +66,7 @@ export const Results = () => {
   console.log(route);
 
   const map = (
-    <BaseMap route={route}>
+    <BaseMap>
       <RouteUpdater route={route} />
     </BaseMap>
   );
