@@ -159,6 +159,11 @@ router.get("/route", (req, res) => {
   res.send(routeJs.getRoute(req.query.startId, req.query.endId));
 });
 
+// get neighbors
+router.get("/neighbors", (req, res) => {
+  res.send(routeJs.getNeighbors(req.query.locationId));
+});
+
 // report a route
 router.post("/report", (req, res) => {
   const reportId = routeJs.reportRoute(req.body.node1, req.body.node2);

@@ -92,18 +92,24 @@ const shiftRoute = () => {
   );
 };
 
+const getNeighbors = (locationId) => {
+  return jsonRoute.neighbors[locationId.toString()];
+};
+
 module.exports = {
   getRoute,
   reportRoute,
   shiftRoute,
+  getNeighbors,
 };
 
 /* Change from hardcoded name to ids
 const mongoose = require("mongoose");
 
 // Server configuration below
-const mongoConnectionURL = process.env.mongoURL;
-const databaseName = process.env.dbName;
+const mongoConnectionURL =
+  "mongodb+srv://mit-tunnel-app:A6yxxeLcyyA9EhNs@cluster0.rsfva.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const databaseName = "Cluster0";
 
 // mongoose 7 warning
 mongoose.set("strictQuery", false);
@@ -172,5 +178,16 @@ const toCall4 = () => {
     newNeighbors[changeObj[i].id] = neighbors[changeObj[i].target];
   }
   console.log(newNeighbors);
+};
+
+const _main = () => {
+  Location.find({}).then((locations) => {
+    locations.forEach((location) => {
+      console.log({
+        id: location._id.toString(),
+        name: location.name,
+      });
+    });
+  });
 };
 */
