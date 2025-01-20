@@ -1,5 +1,6 @@
+import clsx from "clsx";
 import React from "react";
-import { MapContainer, TileLayer } from "react-leaflet";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
 
 const MIT_COORDINATES = [42.360058, -71.088678];
 const MIT_BOUNDS = [
@@ -7,10 +8,10 @@ const MIT_BOUNDS = [
   [42.36262, -71.081382],
 ];
 
-export const BaseMap = ({ children }) => {
+export const BaseMap = ({ children, className }) => {
   return (
     <MapContainer
-      className="h-full w-full flex-auto"
+      className={clsx("h-full w-full flex-auto", className)}
       center={MIT_COORDINATES}
       maxBounds={MIT_BOUNDS}
       zoom={15}

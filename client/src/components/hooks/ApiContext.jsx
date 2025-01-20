@@ -34,16 +34,7 @@ export const useApiDispatch = () => useContext(ApiDispatchContext);
 
 // Fetch locations and set them in the context
 export const fetchLocations = async (dispatch) => {
-  let accessibleLocations = [];
-  const locationsList = await get("/api/location-names");
-  accessibleLocations = locationsList;
-  if (navigator.geolocation) {
-    accessibleLocations.unshift({
-      _id: null,
-      name: "Your Location",
-    });
-  }
-  dispatch({ type: "SET_LOCATIONS", payload: accessibleLocations });
+  dispatch({ type: "SET_LOCATIONS", payload: await get("/api/location-names") });
 };
 
 // Fetch coordinates and set them in the context
