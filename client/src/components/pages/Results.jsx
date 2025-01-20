@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { get } from "../../utilities";
@@ -8,7 +8,7 @@ import { BaseMap } from "../modules/BaseMap";
 
 export const Results = () => {
   const [searchParams] = useSearchParams();
-  const [route, setRoute] = useState([]);
+  const [route, setRoute] = useState(null);
   const startLocationId = searchParams.get("from");
   const endLocationId = searchParams.get("to");
 
@@ -65,10 +65,12 @@ export const Results = () => {
 
   console.log(route);
 
-  const map = (
+  const map = route ? (
     <BaseMap>
       <RouteUpdater route={route} />
     </BaseMap>
+  ) : (
+    <p>Loading...</p>
   );
 
   return (
