@@ -4,7 +4,6 @@ import { useMap } from "react-leaflet";
 import { useApiState, useApiDispatch, fetchCoordinates } from "../hooks/ApiContext";
 
 import "../../utilities.css";
-import { get } from "underscore";
 
 export const RouteUpdater = ({ route }) => {
   const map = useMap();
