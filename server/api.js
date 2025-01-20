@@ -98,7 +98,8 @@ router.post("/hardcoded-locations-import", (req, res) => {
   res.send({ message: `${newLocation.name} added.` });
 });
 
-// get accessible locations _id & names
+// get accessible locations _id, names, and coordinates
+// named like this for consistency with client-side
 router.get("/location-names", (req, res) => {
   let locationsList = [];
   const byName = (a, b) => {
@@ -121,14 +122,7 @@ router.get("/location-names", (req, res) => {
         User.findById(req.user._id).then((user) => {
           locationsList = user.savedPlaces.concat(locationsList);
           req.session.locations = locationsList; // share this locations list with all endpoints
-          res.send(
-            locationsList
-              .map((hardcodedLocation) => ({
-                _id: hardcodedLocation._id,
-                name: hardcodedLocation.name,
-              }))
-              .sort(byName)
-          );
+          res.send(locationsList.sort(byName));
         });
       } else {
         res.send(locationsList.sort(byName));
