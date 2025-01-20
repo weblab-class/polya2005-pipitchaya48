@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect} from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { get } from "../../utilities";
+import "../../utilities.css";
+import { RouteUpdater } from "../modules/RouteUpdater";
+import { BaseMap } from "../modules/BaseMap";
 
 export const Results = () => {
   const [searchParams] = useSearchParams();
-  const [route, setRoute] = useState(null);
+  const [route, setRoute] = useState([]);
   const startLocationId = searchParams.get("from");
   const endLocationId = searchParams.get("to");
 
@@ -48,7 +51,11 @@ export const Results = () => {
   // TO-DO estimate nearest point from GPS location
   useEffect(() => {
     if (startLocationId === "null" || endLocationId === "null") {
-      setRoute([1, 2, 3]); // to be changed
+      setRoute([
+        "678c8bbc1140d591427ba321",
+        "678c8b0d1140d591427ba31f",
+        "678c8b6e1140d591427ba320",
+      ]); // to be changed
     } else {
       get("/api/route", { startId: startLocationId, endId: endLocationId }).then((route) => {
         setRoute(route);
@@ -56,10 +63,18 @@ export const Results = () => {
     }
   }, []);
 
+  console.log(route);
+
+  const map = (
+    <BaseMap route={route}>
+      <RouteUpdater route={route} />
+    </BaseMap>
+  );
+
   return (
-    <div>
+    <div className="h-full w-full flex flex-col items-center justify-center flex-auto">
       Results for {searchParams.get("from")} to {searchParams.get("to")}
-      <p>{route}</p>
+      {map}
     </div>
   );
 };

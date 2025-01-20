@@ -1,6 +1,7 @@
 import React, { useState, useEffect, createContext } from "react";
 import NavBar from "./modules/NavBar";
 import { Outlet } from "react-router-dom";
+import { ApiProvider } from "./hooks/ApiContext";
 
 import jwt_decode from "jwt-decode";
 
@@ -57,10 +58,12 @@ const App = () => {
   };
 
   return (
-    <UserContext.Provider value={authContextValue}>
-      <NavBar />
-      <Outlet />
-    </UserContext.Provider>
+    <ApiProvider>
+      <UserContext.Provider value={authContextValue}>
+        <NavBar />
+        <Outlet />
+      </UserContext.Provider>
+    </ApiProvider>
   );
 };
 

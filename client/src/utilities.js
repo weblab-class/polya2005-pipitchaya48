@@ -68,3 +68,7 @@ export function post(endpoint, params = {}) {
 export function addClassName(props, className) {
   return { ...props, className: clsx(props.className, className) };
 }
+
+export function coordinatesToArray({ latitude, longitude }) {
+  return [latitude, longitude];
+}

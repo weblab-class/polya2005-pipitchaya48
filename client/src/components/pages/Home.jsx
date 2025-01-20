@@ -10,6 +10,7 @@ import "./Home.css";
 import "../../utilities.css";
 
 import { get, post } from "../../utilities";
+import { fetchLocations, useApiDispatch, useApiState } from "../hooks/ApiContext";
 
 const hardcodedLocations = [
   { _id: "1", name: "1" },
@@ -65,7 +66,8 @@ const handleImport = () => {
  */
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState({ from: "", to: "" });
-  const [locations, setLocations] = useState(null);
+  const {locations} = useApiState();
+  const dispatch = useApiDispatch();
   const navigate = useNavigate();
 
   const updateSearchQuery = (key) => (value) => {
@@ -80,21 +82,11 @@ const Search = () => {
     });
   };
 
-  // fetch all locations
   useEffect(() => {
-    let accessibleLocations = [];
-    get("/api/location-names").then((locationsList) => {
-      accessibleLocations = locationsList;
-      // GPS utility
-      if (navigator.geolocation) {
-        accessibleLocations.unshift({
-          _id: null,
-          name: "Your Location",
-        });
-      }
-      setLocations(accessibleLocations);
-    });
-  }, []);
+    if (!locations) {
+      fetchLocations(dispatch);
+    }
+  }, [locations, dispatch]);
 
   return locations ? (
     <form

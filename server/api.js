@@ -89,15 +89,13 @@ router.get("/navigation-setting", (req, res) => {
 // import hardcoded locations to the database
 router.post("/hardcoded-locations-import", (req, res) => {
   const newLocation = new Location({
-    name: req.body.name,
-    latitude: req.body.latitude,
-    longitude: req.body.longitude,
+    ...req.body,
     hardCoded: true,
   });
 
   newLocation.save();
 
-  res.send(`${newLocation.name} added.`);
+  res.send({ message: `${newLocation.name} added.` });
 });
 
 // get accessible locations _id & names
