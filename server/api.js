@@ -101,6 +101,15 @@ router.post("/hardcoded-locations-import", (req, res) => {
 // get accessible locations _id & names
 router.get("/location-names", (req, res) => {
   let locationsList = [];
+  const byName = (a, b) => {
+    if (a.name < b.name) {
+      return -1;
+    }
+    if (a.name > b.name) {
+      return 1;
+    }
+    return 0;
+  };
   // hardcoded locations
   Location.find({ hardCoded: true })
     .then((hardcodedLocations) => {
@@ -113,14 +122,16 @@ router.get("/location-names", (req, res) => {
           locationsList = user.savedPlaces.concat(locationsList);
           req.session.locations = locationsList; // share this locations list with all endpoints
           res.send(
-            locationsList.map((hardcodedLocation) => ({
-              _id: hardcodedLocation._id,
-              name: hardcodedLocation.name,
-            }))
+            locationsList
+              .map((hardcodedLocation) => ({
+                _id: hardcodedLocation._id,
+                name: hardcodedLocation.name,
+              }))
+              .sort(byName)
           );
         });
       } else {
-        res.send(locationsList);
+        res.send(locationsList.sort(byName));
       }
     });
 });
