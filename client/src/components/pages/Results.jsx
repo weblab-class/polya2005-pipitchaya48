@@ -1,10 +1,10 @@
 import React, { useState, useEffect} from "react";
 import { useSearchParams } from "react-router-dom";
-import { MapContainer, TileLayer } from "react-leaflet";
 
 import { get } from "../../utilities";
 import "../../utilities.css";
 import { RouteUpdater } from "../modules/RouteUpdater";
+import { BaseMap } from "../modules/BaseMap";
 
 export const Results = () => {
   const [searchParams] = useSearchParams();
@@ -66,19 +66,9 @@ export const Results = () => {
   console.log(route);
 
   const map = (
-    <MapContainer
-      className="h-full w-full flex-auto"
-      center={[42.360058, -71.088678]}
-      zoom={15}
-      scrollWheelZoom={true}
-      dragging={true}
-    >
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+    <BaseMap route={route}>
       <RouteUpdater route={route} />
-    </MapContainer>
+    </BaseMap>
   );
 
   return (
