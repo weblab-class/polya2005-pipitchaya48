@@ -7,7 +7,7 @@ const getRoute = (startLocation, endLocation) => {
   const agenda = [[startLocation]];
   const neighbors = jsonRoute.neighbors;
 
-  while (agenda) {
+  while (agenda.length > 0) {
     const oldPath = agenda.shift();
     const lastNode = oldPath.at(-1);
     const searchNodes = neighbors[lastNode];
