@@ -1,9 +1,9 @@
 import { circleMarker, polyline, canvas } from "leaflet";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useMap } from "react-leaflet";
-import { useApiState, useApiDispatch, fetchLocations } from "../hooks/ApiContext";
+import { useApiState, useApiDispatch, fetchLocations, fetchNeighbors } from "../hooks/ApiContext";
 
-const routeSegmentRenderer = canvas({ padding: 0.5, tolerance: 5 });
+const routeRenderer = canvas({ padding: 0.5, tolerance: 5 });
 
 const nodeMarker = (location) =>
   circleMarker([location.latitude, location.longitude], {
@@ -11,7 +11,8 @@ const nodeMarker = (location) =>
     color: "#750014",
     stroke: false,
     fillOpacity: 1,
-  }).bindTooltip(location.name);
+    renderer: routeRenderer,
+  }).bindPopup(location.name);
 
 /**
  * @typedef Location
@@ -61,7 +62,7 @@ class RouteSegment {
         [this.start.latitude, this.start.longitude],
         [this.end.latitude, this.end.longitude],
       ],
-      { color: "#750014", weight: 2, renderer: routeSegmentRenderer }
+      { color: "#750014", weight: 2, renderer: routeRenderer }
     );
     this.#line
       .on("click", () => {
@@ -100,12 +101,14 @@ class RouteSegment {
  */
 export const ReportMapUpdater = ({ onChange = (routeSegments) => {} }) => {
   const map = useMap();
-  const { locations } = useApiState();
+  const { locations, neighbors } = useApiState();
   const dispatch = useApiDispatch();
   const [reportList, setReportList] = useState([]);
 
+  const addReport = useCallback((route) => {setReportList([...reportList, route])}, [reportList]);
+  const removeReport = useCallback((route) => {setReportList(reportList.filter((r) => !r.equals(route)) )}, [reportList]);
+
   useEffect(() => {
-    console.log(reportList);
     onChange(reportList);
   }, [reportList]);
 
@@ -115,19 +118,37 @@ export const ReportMapUpdater = ({ onChange = (routeSegments) => {} }) => {
       if (!locations) {
         await fetchLocations(dispatch);
       }
+      let locationsTable = {};
+      locations.forEach((location) => {
+        locationsTable[location._id] = location;
+      });
+
+      locations
+        .map(async (location) => {
+          if (!neighbors[location?._id]) {
+            await fetchNeighbors(dispatch, location._id);
+          }
+          return [location, neighbors[location._id]];
+        })
+        .forEach(async (neighborPromise) => {
+          const [location, neighbor] = await neighborPromise;
+          neighbor.forEach((neighborId) => {
+            if (location._id < neighborId) {
+              new RouteSegment(location, locationsTable[neighborId])
+                .onSelect(addReport)
+                .onDeselect(removeReport)
+                .addTo(map);
+            }
+          });
+        });
+
       locations.forEach((location) => {
         map.addLayer(nodeMarker(location));
       });
-
-      // TODO: get route segments from the server
-      new RouteSegment(locations[0], locations[1])
-        .onSelect((route) => setReportList([...reportList, route]))
-        .onDeselect((route) => setReportList(reportList.filter((r) => !r.equals(route))))
-        .addTo(map);
     };
 
     updateReportMap();
-  }, [locations, dispatch]);
+  }, [locations, neighbors, dispatch]);
 
   return null;
 };
