@@ -120,7 +120,7 @@ const Search = () => {
       <Button
         disabled={searchQuery.from === "" || searchQuery.to === ""}
         type="submit"
-        className="u-mainButton bg-bright-red text-white disabled:opacity-20 disabled:border-none"
+        className="mainButton bg-bright-red text-white disabled:opacity-20 disabled:border-none"
       >
         GO
       </Button>

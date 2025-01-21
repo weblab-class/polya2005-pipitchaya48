@@ -125,7 +125,7 @@ form {
   border-radius: inherit;
 }
 
-.u-mainButton {
+.mainButton {
   padding: var(--s) var(--m);
   border-radius: var(--s);
   font-size: 1rem;
