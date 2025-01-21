@@ -63,8 +63,7 @@ class RouteSegment {
         [this.end.latitude, this.end.longitude],
       ],
       { color: "#750014", weight: 2, renderer: routeRenderer }
-    );
-    this.#line
+    )
       .on("click", () => {
         if (this.#selected) {
           this.#onDeselect(this);
@@ -93,11 +92,6 @@ class RouteSegment {
   /** @param {(RouteSegment) => void} callback  */
   onDeselect(callback) {
     this.#onDeselect = callback;
-    return this;
-  }
-
-  off() {
-    this.#line.off("click");
     return this;
   }
 }
