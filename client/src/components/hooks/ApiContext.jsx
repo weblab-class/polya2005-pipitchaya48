@@ -13,6 +13,11 @@ const apiReducer = (state, action) => {
         ...state,
         coordinates: { ...state.coordinates, [action.payload.id]: action.payload.coords },
       };
+    case "SET_NEIGHBORS":
+      return {
+        ...state,
+        neighbors: { ...state.neighbors, [action.payload.id]: action.payload.neighbors },
+      }
 
     default:
       throw new Error(`Unknown action: ${action.type}`);
@@ -20,7 +25,12 @@ const apiReducer = (state, action) => {
 };
 
 export const ApiProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(apiReducer, { route: null, locations: null, coordinates: {} });
+  const [state, dispatch] = useReducer(apiReducer, {
+    route: null,
+    locations: null,
+    coordinates: {},
+    neighbors: {},
+  });
 
   return (
     <ApiStateContext.Provider value={state}>
@@ -43,5 +53,14 @@ export const fetchCoordinates = async (dispatch, locationId) => {
   dispatch({
     type: "SET_COORDINATES",
     payload: { id: locationId, coords: coordinatesToArray(coords) },
+  });
+};
+
+// Fetch neighbors and set them in the context
+export const fetchNeighbors = async (dispatch, locationId) => {
+  const neighbors = await get("/api/neighbors", { locationId: locationId });
+  dispatch({
+    type: "SET_NEIGHBORS",
+    payload: { id: locationId, neighbors: neighbors },
   });
 };
