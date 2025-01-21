@@ -26,7 +26,6 @@ const apiReducer = (state, action) => {
 
 export const ApiProvider = ({ children }) => {
   const [state, dispatch] = useReducer(apiReducer, {
-    route: null,
     locations: null,
     coordinates: {},
     neighbors: {},
