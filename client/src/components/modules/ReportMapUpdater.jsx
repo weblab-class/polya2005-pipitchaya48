@@ -1,5 +1,5 @@
 import { circleMarker, polyline, canvas } from "leaflet";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect } from "react";
 import { useMap } from "react-leaflet";
 import { useApiState, useApiDispatch, fetchLocations, fetchNeighbors } from "../hooks/ApiContext";
 
@@ -77,6 +77,7 @@ class RouteSegment {
         }
       })
       .addTo(this.#map);
+    return this;
   }
 
   equals(other) {
@@ -94,6 +95,11 @@ class RouteSegment {
     this.#onDeselect = callback;
     return this;
   }
+
+  off() {
+    this.#line.off("click");
+    return this;
+  }
 }
 
 /**
@@ -103,14 +109,19 @@ export const ReportMapUpdater = ({ onChange = (routeSegments) => {} }) => {
   const map = useMap();
   const { locations, neighbors } = useApiState();
   const dispatch = useApiDispatch();
-  const [reportList, setReportList] = useState([]);
+  const reportList = [];
 
-  const addReport = useCallback((route) => {setReportList([...reportList, route])}, [reportList]);
-  const removeReport = useCallback((route) => {setReportList(reportList.filter((r) => !r.equals(route)) )}, [reportList]);
-
-  useEffect(() => {
+  const addReport = (route) => {
+    reportList.push(route);
     onChange(reportList);
-  }, [reportList]);
+  };
+  const removeReport = (route) => {
+    reportList.splice(
+      reportList.findIndex((r) => r.equals(route)),
+      1
+    );
+    onChange(reportList);
+  };
 
   useEffect(() => {
     const updateReportMap = async () => {
