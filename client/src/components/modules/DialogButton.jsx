@@ -16,9 +16,13 @@ export function DialogButton({
   confirmButton,
   handleCloseRef,
   afterClose = () => {},
+  beforeOpen = () => {},
 }) {
   const [open, setOpen] = useState(false);
-  const handleOpen = useCallback(() => setOpen(true), []);
+  const handleOpen = useCallback(() => {
+    beforeOpen();
+    setOpen(true);
+  }, []);
   const handleClose = useCallback(() => {
     setOpen(false);
     afterClose();

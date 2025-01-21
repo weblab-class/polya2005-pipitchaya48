@@ -4,6 +4,7 @@ import "../../utilities.css";
 import { BaseMap } from "../modules/BaseMap";
 import { ReportMapUpdater } from "../modules/ReportMapUpdater";
 import { DialogButton } from "../modules/DialogButton";
+import { post } from "../../utilities";
 
 export const Report = () => {
   const [reportList, setReportList] = useState([]);
@@ -47,6 +48,14 @@ export const Report = () => {
                   These routes have been reported as unavailable:
                   {routeNames}
                 </>
+              }
+              beforeOpen={() =>
+                reportList.forEach((routeSegment) =>
+                  post("/api/report", {
+                    node1: routeSegment.start._id,
+                    node2: routeSegment.end._id,
+                  })
+                )
               }
               afterClose={handleCloseRef.current}
               dismissButtonText="OK"
