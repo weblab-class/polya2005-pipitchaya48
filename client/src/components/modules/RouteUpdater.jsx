@@ -11,21 +11,21 @@ export const RouteUpdater = ({ route }) => {
   const { coordinates } = useApiState();
   const dispatch = useApiDispatch();
 
+  const getCoord = async (locationId) => {
+    if (!coordinates[locationId]) {
+      await fetchCoordinates(dispatch, locationId);
+    }
+    return coordinates[locationId];
+  };
+
   useEffect(() => {
     const updateRoute = async () => {
-      const getCoord = async (locationId) => {
-        if (!coordinates[locationId]) {
-          await fetchCoordinates(dispatch, locationId);
-        }
-        return coordinates[locationId];
-      };
       // const coords = [startCoords, ...middleCoords, endCoords];
       const coordsPromise = route.map(getCoord);
       const coords = [];
       for (const coordPromise of coordsPromise) {
         coords.push(await coordPromise);
       }
-      console.log(coords);
       if (coords.length !== 0 && coords.every((coord) => coord?.length === 2)) {
         coords.forEach((coord_in, index) => {
           const coord = [...coord_in];
@@ -54,6 +54,32 @@ export const RouteUpdater = ({ route }) => {
 
     updateRoute();
   }, [route, coordinates, dispatch, map]);
+
+  // display user's locaiton
+  useEffect(() => {
+    const updateUserLocation = async () => {
+      if (navigator.geolocation) {
+        let userCoord;
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            userCoord = [position.coords.latitude, position.coords.longitude];
+            map.addLayer(
+              circleMarker(userCoord, {
+                radius: 7,
+                color: "248cf3",
+                fillOpacity: 0.5,
+              })
+            );
+          },
+          (err) => {
+            console.log(`User's location is not available: ${err}`);
+          }
+        );
+      }
+    };
+
+    updateUserLocation();
+  }, []);
 
   return null;
 };
