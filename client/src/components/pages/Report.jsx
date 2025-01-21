@@ -2,8 +2,8 @@ import React from "react";
 
 import "../../utilities.css";
 import { BaseMap } from "../modules/BaseMap";
-import { Button } from "@mui/base";
 import { ReportMapUpdater } from "../modules/ReportMapUpdater";
+import { DialogButton } from "../modules/DialogButton";
 
 export const Report = () => {
   return (
@@ -14,7 +14,7 @@ export const Report = () => {
         <BaseMap className="border border-black rounded">
           <ReportMapUpdater />
         </BaseMap>
-        <Button className="u-mainButton bg-bright-red text-white w-full">Report</Button>
+        <DialogButton className="u-mainButton bg-bright-red text-white w-full">Report</DialogButton>
       </div>
     </div>
   );
