@@ -26,4 +26,5 @@
   min-width: fit-content;
   width: 100%;
   border: none;
+  background-color: var(--default-background-color);
 }

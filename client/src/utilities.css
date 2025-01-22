@@ -27,6 +27,7 @@
 
 :root {
   --default-border-width: 1px;
+  --default-background-color: #fbfbfe;
 
   --xs: 4px;
   --s: 8px;
@@ -35,7 +36,7 @@
 }
 
 #root {
-  background-color: #fbfbfe;
+  background-color: var(--default-background-color);
 }
 
 body {
