@@ -7,6 +7,12 @@
 |
 */
 
+// ---------- Constants ----------
+// Time interval in which the reportedRoute is restricted (in ms)
+const reportRouteTimeInterval = 20000;
+
+// -------------------------------
+
 const express = require("express");
 
 // import models so we can interact with the database
@@ -209,7 +215,7 @@ router.post("/report", (req, res) => {
   });
 });
 
-// unreport the earliest reported route
+// manual -- unreport reportedRoute by Id
 router.get("/unreport-route", (req, res) => {
   // routeJs.shiftRoute();
   // res.send("Unreport successfully");
@@ -236,10 +242,50 @@ router.get("/unreport-route", (req, res) => {
   });
 });
 
+// clear all reported routes that should be clear
+// async ensure that the reported route is deleted
+const updateReportedRoutes = () => {
+  const timeNow = Date.now();
+  ReportedRoute.find({}).then((reportedRoutes) => {
+    const reportedRoutesToClear = reportedRoutes.filter(
+      (route) => timeNow - route.reportedTime > reportRouteTimeInterval
+    );
+    console.log(reportedRoutesToClear);
+    if (reportedRoutesToClear.length > 0) {
+      const reportedRoute = reportedRoutesToClear[0];
+      console.log(reportedRoute._id);
+      // add routes back
+      Location.findById(reportedRoute.node1).then((location1) => {
+        const neighborsOf1 = location1.neighbors;
+        neighborsOf1.push(reportedRoute.node2.toString());
+        location1.neighbors = neighborsOf1;
+        location1.save();
+
+        Location.findById(reportedRoute.node2).then(async (location2Promise) => {
+          const location2 = await location2Promise;
+          const neighborsOf2 = location2.neighbors;
+          neighborsOf2.push(reportedRoute.node1.toString());
+          location2.neighbors = neighborsOf2;
+          location2.save();
+          console.log(location2);
+
+          console.log(reportedRoute._id);
+          // delete reportedRoute
+          await ReportedRoute.deleteOne({ _id: reportedRoute._id });
+          console.log("unreport successful");
+        });
+      });
+    }
+  });
+};
+
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
   console.log(`API route not found: ${req.method} ${req.url}`);
   res.status(404).send({ msg: "API route not found" });
 });
 
-module.exports = router;
+module.exports = {
+  router,
+  updateReportedRoutes,
+};

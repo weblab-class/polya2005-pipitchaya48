@@ -45,7 +45,7 @@ const neighborsId = JSON.parse(fs.readFileSync(path.resolve(__dirname, "neighbor
 */
 
 const checkMutual = () => {
-  for (key in neighborsName) {
+  for (var key in neighborsName) {
     neighborsName[key].forEach((location) => {
       if (!neighborsName[location].includes(key)) {
         console.log(`Error at key = ${key}, location = ${location}`);
@@ -97,12 +97,14 @@ const mapNameToId = () => {
   console.log("neighborsId.json updated");
 };
 
+// use for update/neighbors of locations in the data base
 const updateNeighbors = () => {
   Location.find({}).then((locations) => {
     locations.forEach((location) => {
       location.neighbors = neighborsId[location._id.toString()];
       location.save();
     });
+    console.log("done");
   });
 };
 
