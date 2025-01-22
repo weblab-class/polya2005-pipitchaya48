@@ -2,15 +2,16 @@ const fs = require("fs");
 const path = require("path");
 const jsonRoute = JSON.parse(fs.readFileSync(path.resolve(__dirname, "route.json")));
 
-const getRoute = (startLocation, endLocation) => {
+const Location = require("./models/location");
+
+const getRoute = (neighborsJson, startLocation, endLocation) => {
   const visited = new Set([startLocation]);
   const agenda = [[startLocation]];
-  const neighbors = jsonRoute.neighbors;
 
   while (agenda.length > 0) {
     const oldPath = agenda.shift();
     const lastNode = oldPath.at(-1);
-    const searchNodes = neighbors[lastNode];
+    const searchNodes = neighborsJson[lastNode];
     for (let i = 0; i < searchNodes.length; i++) {
       const newNode = searchNodes[i];
       if (!visited.has(newNode)) {
@@ -93,7 +94,7 @@ const shiftRoute = () => {
 };
 
 const getNeighbors = (locationId) => {
-  return jsonRoute.neighbors[locationId.toString()];
+  return jsonRoute.neighbors[locationId];
 };
 
 module.exports = {

@@ -1,3 +1,11 @@
+import { createRequire } from "module";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+const require = createRequire(import.meta.url);
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 // Change from hardcoded name to ids
 const mongoose = require("mongoose");
 
@@ -89,7 +97,14 @@ const mapNameToId = () => {
   console.log("neighborsId.json updated");
 };
 
-mapNameToId();
+const updateNeighbors = () => {
+  Location.find({}).then((locations) => {
+    locations.forEach((location) => {
+      location.neighbors = neighborsId[location._id.toString()];
+      location.save();
+    });
+  });
+};
 
 /* NEXT: change building names to Ids in .json
 const toCall = (target) => {

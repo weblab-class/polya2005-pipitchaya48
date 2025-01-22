@@ -5,6 +5,7 @@ const LocationSchema = new mongoose.Schema({
   latitude: Number,
   longitude: Number,
   hardCoded: { type: Boolean, default: false },
+  neighbors: { type: Array, default: [] },
 });
 
 // compile model from schema

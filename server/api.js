@@ -156,12 +156,20 @@ router.get("/location-coords", (req, res) => {
 
 // get route from start to destination
 router.get("/route", (req, res) => {
-  res.send(routeJs.getRoute(req.query.startId, req.query.endId));
+  const neighborsJson = {};
+  Location.find({}).then((locations) => {
+    locations.forEach((location) => {
+      neighborsJson[location._id.toString()] = location.neighbors;
+    });
+    res.send(routeJs.getRoute(neighborsJson, req.query.startId, req.query.endId));
+  });
 });
 
 // get neighbors
 router.get("/neighbors", (req, res) => {
-  res.send(routeJs.getNeighbors(req.query.locationId));
+  Location.findById(req.query.locationId).then((location) => {
+    res.send(location.neighbors);
+  });
 });
 
 // report a route
