@@ -12,6 +12,7 @@ const express = require("express");
 // import models so we can interact with the database
 const { User } = require("./models/user");
 const Location = require("./models/location");
+const ReportedRoute = require("./models/reportedRoute");
 
 // import authentication library
 const auth = require("./auth");
@@ -174,14 +175,65 @@ router.get("/neighbors", (req, res) => {
 
 // report a route
 router.post("/report", (req, res) => {
-  const reportId = routeJs.reportRoute(req.body.node1, req.body.node2);
-  res.send({ reportId: reportId });
+  // const reportId = routeJs.reportRoute(req.body.node1, req.body.node2);
+  // res.send({ reportId: reportId });
+
+  const node1 = req.body.node1;
+  const node2 = req.body.node2;
+  // remove routes from Location.neighbors
+  Location.findById(node1).then((location1) => {
+    const neighborsOf1 = location1.neighbors;
+    const index1 = neighborsOf1.indexOf(node2);
+    neighborsOf1.splice(index1, 1);
+    location1.neighbors = neighborsOf1;
+    location1.save();
+
+    Location.findById(node2).then((location2) => {
+      const neighborsOf2 = location2.neighbors;
+      const index2 = neighborsOf2.indexOf(node1);
+      neighborsOf2.splice(index2, 1);
+      location2.neighbors = neighborsOf2;
+      location2.save();
+
+      // add new report obj
+      const newReportedRoute = ReportedRoute({
+        node1: node1,
+        node2: node2,
+        reportedTime: Date.now(),
+      });
+      newReportedRoute.save();
+
+      console.log("report successful");
+      res.send({ reportId: newReportedRoute._id, reportedTime: newReportedRoute.reportedTime });
+    });
+  });
 });
 
 // unreport the earliest reported route
 router.get("/unreport-route", (req, res) => {
-  routeJs.shiftRoute();
-  res.send("Unreport successfully");
+  // routeJs.shiftRoute();
+  // res.send("Unreport successfully");
+
+  ReportedRoute.findById(req.query.reportId).then((reportedRoute) => {
+    // add routes back
+    Location.findById(reportedRoute.node1).then((location1) => {
+      const neighborsOf1 = location1.neighbors;
+      neighborsOf1.push(reportedRoute.node2);
+      location1.neighbors = neighborsOf1;
+      location1.save();
+
+      Location.findById(reportedRoute.node2).then((location2) => {
+        const neighborsOf2 = location2.neighbors;
+        neighborsOf2.push(reportedRoute.node1);
+        location2.neighbors = neighborsOf2;
+        location2.save();
+
+        // delete reportedRoute
+        ReportedRoute.deleteOne({ _id: req.query.reportId });
+        console.log("unreport successful");
+      });
+    });
+  });
 });
 
 // anything else falls to this "not found" case
