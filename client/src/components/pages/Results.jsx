@@ -5,12 +5,37 @@ import { get } from "../../utilities";
 import "../../utilities.css";
 import { RouteUpdater } from "../modules/RouteUpdater";
 import { BaseMap } from "../modules/BaseMap";
+import { useApiState, useApiDispatch, fetchLocations } from "../hooks/ApiContext";
+
+function findClosestLocation(locations, coords) {
+  let closestLocation = null;
+  let minDistance = Infinity;
+  for (const location of locations) {
+    const distance = Math.sqrt(
+      (location.latitude - coords.latitude) ** 2 + (location.longitude - coords.longitude) ** 2
+    );
+    if (distance < minDistance) {
+      minDistance = distance;
+      closestLocation = location;
+    }
+  }
+  return closestLocation;
+}
 
 export const Results = () => {
   const [searchParams] = useSearchParams();
-  const [route, setRoute] = useState(null);
-  const startLocationId = searchParams.get("from");
-  const endLocationId = searchParams.get("to");
+  const [route, setRoute] = useState([]);
+  const [startLocationId, setStartLocationId] = useState(searchParams.get("from"));
+  const [endLocationId, setEndLocationId] = useState(searchParams.get("to"));
+
+  const { locations } = useApiState();
+  const dispatch = useApiDispatch();
+
+  useEffect(() => {
+    if (!locations) {
+      fetchLocations(dispatch);
+    }
+  }, [locations, dispatch]);
 
   /* get locations
   const [startCoords, setStartCoords] = useState({});
@@ -49,19 +74,30 @@ export const Results = () => {
 
   // fetch Route
   // TO-DO estimate nearest point from GPS location
+
   useEffect(() => {
-    if (startLocationId === "null" || endLocationId === "null") {
-      setRoute([
-        "678e8d67141b2290313bcebf",
-        "678e8d68141b2290313bcecf",
-        "678e8d68141b2290313bced5",
-      ]); // to be changed
-    } else {
+    if (!locations) {
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(({ coords }) => {
+      const closestLocation = findClosestLocation(locations, coords);
+      console.log(closestLocation);
+      if (startLocationId === "null") {
+        setStartLocationId(closestLocation._id);
+      }
+      if (endLocationId === "null") {
+        setEndLocationId(closestLocation._id);
+      }
+    });
+  }, [locations]);
+
+  useEffect(() => {
+    if (startLocationId !== "null" && endLocationId !== "null") {
       get("/api/route", { startId: startLocationId, endId: endLocationId }).then((route) => {
         setRoute(route);
       });
     }
-  }, []);
+  }, [startLocationId, endLocationId]);
 
   console.log(route);
 
