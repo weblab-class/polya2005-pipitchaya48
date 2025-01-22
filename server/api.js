@@ -167,7 +167,7 @@ router.get("/neighbors", (req, res) => {
 // report a route
 router.post("/report", (req, res) => {
   const reportId = routeJs.reportRoute(req.body.node1, req.body.node2);
-  res.send(reportId);
+  res.send({ reportId: reportId });
 });
 
 // unreport the earliest reported route
