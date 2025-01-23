@@ -1,5 +1,5 @@
 import { circleMarker, marker as mapMarker, polyline } from "leaflet";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useMap } from "react-leaflet";
 import { useApiState, useApiDispatch, fetchCoordinates } from "../hooks/ApiContext";
 
@@ -10,6 +10,7 @@ export const RouteUpdater = ({ route }) => {
   const numCoords = route.length;
   const { coordinates } = useApiState();
   const dispatch = useApiDispatch();
+  const [pathLayers, setPathLayers] = useState([]);
 
   const getCoord = async (locationId) => {
     if (!coordinates[locationId]) {
@@ -21,8 +22,10 @@ export const RouteUpdater = ({ route }) => {
   useEffect(() => {
     const updateRoute = async () => {
       // const coords = [startCoords, ...middleCoords, endCoords];
+      pathLayers.forEach((layer) => map.removeLayer(layer));
       const coordsPromise = route.map(getCoord);
       const coords = [];
+      const currentLayers = [];
       for (const coordPromise of coordsPromise) {
         coords.push(await coordPromise);
       }
@@ -45,40 +48,39 @@ export const RouteUpdater = ({ route }) => {
                 color: "#8b959e",
               });
           }
+          currentLayers.push(marker);
           map.addLayer(marker);
         });
 
-        polyline(coords, { color: "#750014" }).addTo(map);
+        const path = polyline(coords, { color: "#750014" });
+        path.addTo(map);
+        currentLayers.push(path);
+        setPathLayers(currentLayers);
       }
     };
-
     updateRoute();
-  }, [route, coordinates, dispatch, map]);
+  }, [coordinates]);
 
   // display user's locaiton
   useEffect(() => {
-    const updateUserLocation = async () => {
-      if (navigator.geolocation) {
-        let userCoord;
-        navigator.geolocation.getCurrentPosition(
-          async (position) => {
-            userCoord = [position.coords.latitude, position.coords.longitude];
-            map.addLayer(
-              circleMarker(userCoord, {
-                radius: 7,
-                color: "248cf3",
-                fillOpacity: 0.5,
-              })
-            );
-          },
-          (err) => {
-            console.log(`User's location is not available: ${err}`);
-          }
-        );
-      }
-    };
-
-    updateUserLocation();
+    if (navigator.geolocation) {
+      let userCoord;
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          userCoord = [position.coords.latitude, position.coords.longitude];
+          map.addLayer(
+            circleMarker(userCoord, {
+              radius: 7,
+              color: "248cf3",
+              fillOpacity: 0.5,
+            })
+          );
+        },
+        (err) => {
+          console.log(`User's location is not available: ${err}`);
+        }
+      );
+    }
   }, []);
 
   return null;
