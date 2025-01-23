@@ -13,6 +13,12 @@
 | - Actually starts the webserver
 */
 
+// ---------- Constants ----------
+// Time Interval for updating the reportedRoutes (in ms)
+const updateReportedRoutesTimeInterval = 5000;
+
+// -------------------------------
+
 // validator runs some basic checks to make sure you've set everything up correctly
 // this is a tool provided by staff, so you don't need to worry about it
 const validator = require("./validator");
@@ -28,7 +34,7 @@ const session = require("express-session"); // library that stores info about ea
 const mongoose = require("mongoose"); // library to connect to MongoDB
 const path = require("path"); // provide utilities for working with file and directory paths
 
-const api = require("./api");
+const { router, updateReportedRoutes } = require("./api");
 const auth = require("./auth");
 
 // socket stuff
@@ -65,7 +71,7 @@ app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUniniti
 app.use(auth.populateCurrentUser);
 
 // connect user-defined routes
-app.use("/api", api);
+app.use("/api", router);
 
 // load the compiled react files, which will serve /index.html and /bundle.js
 const reactPath = path.resolve(__dirname, "..", "client", "dist");
@@ -103,6 +109,10 @@ app.use((err, req, res, next) => {
 const port = 3000;
 const server = http.Server(app);
 socketManager.init(server);
+
+setInterval(async () => {
+  await updateReportedRoutes();
+}, updateReportedRoutesTimeInterval);
 
 server.listen(port, () => {
   console.log(`Server running on port: ${port}`);
