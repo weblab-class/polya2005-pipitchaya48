@@ -81,6 +81,7 @@ const Search = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    post("/api/add-history", { ...searchQuery });
     navigate({
       pathname: "/results",
       search: createSearchParams(searchQuery).toString(),
