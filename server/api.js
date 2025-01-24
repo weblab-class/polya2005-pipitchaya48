@@ -93,6 +93,35 @@ router.get("/navigation-setting", (req, res) => {
   }
 });
 
+// update history
+router.post("/add-history", (req, res) => {
+  if (req.user) {
+    const newHistory = {
+      from: req.body.from,
+      to: req.body.to,
+      date: Date.now(),
+    };
+    User.findById(req.user._id).then((user) => {
+      user.history.unshift(newHistory);
+      user.save();
+      res.send(user.history);
+    });
+  } else {
+    res.status(401).send({ msg: "User not logged in" });
+  }
+});
+
+// get history
+router.get("/history", (req, res) => {
+  if (req.user) {
+    User.findById(req.user._id).then((user) => {
+      res.send(user.history);
+    });
+  } else {
+    res.status(401).send({ msg: "User not logged in" });
+  }
+});
+
 // import hardcoded locations to the database
 router.post("/hardcoded-locations-import", (req, res) => {
   const newLocation = new Location({
