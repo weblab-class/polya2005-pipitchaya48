@@ -24,7 +24,7 @@ export const Settings = () => {
           <MenuListItem onClick={navigateToSubSettings("navigation")}>
             Navigation Settings
           </MenuListItem>
-          <MenuListItem onClick={navigateToSubSettings("saved-places")}>Saved Places</MenuListItem>
+          <MenuListItem onClick={navigateToSubSettings("saved-places")}>Add/View Saved Places</MenuListItem>
           <MenuListItem onClick={navigateToSubSettings("history")}>History</MenuListItem>
           <MenuListItem
             onClick={() => {
