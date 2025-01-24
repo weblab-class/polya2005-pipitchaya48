@@ -5,6 +5,7 @@ import { get, post } from "../../utilities";
 import { MenuItem, MenuList } from "../modules/MenuList";
 import { ChevronRight } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { DialogButton } from "../modules/DialogButton";
 
 export const History = () => {
   const [history, setHistory] = useState(null);
@@ -70,43 +71,90 @@ export const History = () => {
     <div className="flex flex-col items-center py-8 w-full max-h-full">
       <SettingsHeading>History</SettingsHeading>
       {history ? (
-        <MenuList className="w-full">
-          {history.map(
-            (historyItem) => (
-              console.log(historyItem),
-              (
-                <MenuItem
-                  className="hover:bg-gray-100 cursor-pointer"
-                  onClick={() => {
-                    post("/api/add-history", { from: historyItem.from, to: historyItem.to });
-                    navigate(`/results?from=${historyItem.from}&to=${historyItem.to}`);
-                  }}
-                >
-                  {locationsTable[historyItem.to] && locationsTable[historyItem.from] ? (
-                    <div className="flex flex-row justify-between w-full">
-                      <span className="flex flex-col">
-                        <span className="flex gap-m">
-                          <div className="text-gray-500 w-10">From</div>
-                          <div>{locationsTable[historyItem.from].name}</div>
+        <>
+          <MenuList className="w-full">
+            {history.map(
+              (historyItem) => (
+                console.log(historyItem),
+                (
+                  <MenuItem
+                    className="hover:bg-gray-100 cursor-pointer"
+                    onClick={() => {
+                      post("/api/add-history", { from: historyItem.from, to: historyItem.to });
+                      navigate(`/results?from=${historyItem.from}&to=${historyItem.to}`);
+                    }}
+                  >
+                    {locationsTable[historyItem.to] && locationsTable[historyItem.from] ? (
+                      <div className="flex flex-row justify-between w-full">
+                        <span className="flex flex-col">
+                          <span className="flex gap-m">
+                            <div className="text-gray-500 w-10">From</div>
+                            <div>{locationsTable[historyItem.from].name}</div>
+                          </span>
+                          <span className="flex gap-m">
+                            <div className="text-gray-500 w-10">To</div>
+                            <div>{locationsTable[historyItem.to].name}</div>
+                          </span>
                         </span>
-                        <span className="flex gap-m">
-                          <div className="text-gray-500 w-10">To</div>
-                          <div>{locationsTable[historyItem.to].name}</div>
-                        </span>
-                      </span>
-                      <div className="flex flex-row items-center text-gray-500">
-                        <p>{getTimeAgo(historyItem.date)} ago</p>
-                        <ChevronRight />
+                        <div className="flex flex-row items-center text-gray-500">
+                          <p>{getTimeAgo(historyItem.date)} ago</p>
+                          <ChevronRight />
+                        </div>
                       </div>
-                    </div>
-                  ) : (
-                    <span className="text-lg">Loading...</span>
-                  )}
-                </MenuItem>
+                    ) : (
+                      <span className="text-lg">Loading...</span>
+                    )}
+                  </MenuItem>
+                )
               )
-            )
+            )}
+          </MenuList>
+          {history.length > 0 ? (
+            <div className="flex justify-end w-full px-m">
+              <DialogButton
+                rootClassName=""
+                title="Clear History"
+                description={
+                  <div className="flex flex-col px-s">
+                    <span className="py-xs">
+                      Navigation History will be cleared. This action is irreversible.
+                    </span>
+                    <span>Are you sure you want to proceed?</span>
+                  </div>
+                }
+                dismissButtonText="Cancel"
+                dismissButtonClassName="border border-solid border-opacity-25 border-slate-900 bg-bright-red text-white px-m hover:bg-mit-red"
+                className="mainButton bg-bright-red text-white disabled:opacity-20 disabled:border-transparent w-max hover:bg-mit-red"
+                confirmButton={
+                  <DialogButton
+                    rootClassName=""
+                    title="History Cleared"
+                    description={
+                      <div className="px-s">
+                        Your navigation history is cleared. Plase refresh to see the change.
+                      </div>
+                    }
+                    beforeOpen={() => {
+                      post("/api/clear-history");
+                    }}
+                    afterClose={() => {
+                      navigate(0);
+                    }}
+                    dismissButtonText="Close"
+                    dismissButtonClassName="bg-mit-red text-white px-m"
+                    className="p-s rounded-lg border border-solid border-opacity-25 border-slate-900 text-slate-900 bg-slate-900 bg-opacity-5 hover:bg-opacity-20"
+                  >
+                    Confirm
+                  </DialogButton>
+                }
+              >
+                Clear History
+              </DialogButton>
+            </div>
+          ) : (
+            <span>No Navigation History</span>
           )}
-        </MenuList>
+        </>
       ) : (
         <span>Loading...</span>
       )}

@@ -32,6 +32,7 @@ const session = require("express-session");
 
 // import algorithms
 const routeJs = require("./route");
+const { use } = require("react");
 
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
@@ -116,6 +117,19 @@ router.get("/history", (req, res) => {
   if (req.user) {
     User.findById(req.user._id).then((user) => {
       res.send(user.history);
+    });
+  } else {
+    res.status(401).send({ msg: "User not logged in" });
+  }
+});
+
+// clear history
+router.post("/clear-history", (req, res) => {
+  if (req.user) {
+    User.findById(req.user._id).then((user) => {
+      user.history = [];
+      user.save();
+      res.send({ msg: "History Cleared" });
     });
   } else {
     res.status(401).send({ msg: "User not logged in" });
