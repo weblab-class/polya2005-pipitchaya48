@@ -5,6 +5,10 @@ const jsonRoute = JSON.parse(fs.readFileSync(path.resolve(__dirname, "route.json
 const Location = require("./models/location");
 
 const getRoute = (neighborsJson, startLocation, endLocation) => {
+  if (startLocation === endLocation) {
+    return [startLocation];
+  }
+
   const visited = new Set([startLocation]);
   const agenda = [[startLocation]];
 

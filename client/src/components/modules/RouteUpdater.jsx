@@ -34,11 +34,11 @@ export const RouteUpdater = ({ route }) => {
           const coord = [...coord_in];
           let marker;
           switch (index) {
-            case 0:
-              marker = circleMarker(coord, { radius: 10, color: "#750014" });
-              break;
             case numCoords - 1:
               marker = mapMarker(coord, { color: "#8b959e" });
+              break;
+            case 0:
+              marker = circleMarker(coord, { radius: 10, color: "#750014" });
               break;
             default:
               marker = circleMarker(coord, {
