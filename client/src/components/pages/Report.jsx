@@ -5,8 +5,10 @@ import { BaseMap } from "../modules/BaseMap";
 import { ReportMapUpdater } from "../modules/ReportMapUpdater";
 import { DialogButton } from "../modules/DialogButton";
 import { post } from "../../utilities";
+import { useNavigate } from "react-router-dom";
 
 export const Report = () => {
+  const navigate = useNavigate();
   const [reportList, setReportList] = useState([]);
   useEffect(() => {
     console.log(reportList);
@@ -57,7 +59,10 @@ export const Report = () => {
                   })
                 )
               }
-              afterClose={handleCloseRef.current}
+              afterClose={() => {
+                handleCloseRef.current();
+                navigate("/");
+              }}
               dismissButtonText="OK"
               dismissButtonClassName="bg-mit-red text-white px-m"
               className="p-s rounded-lg border border-solid border-opacity-25 border-slate-900 text-slate-900 bg-slate-900 bg-opacity-5"
