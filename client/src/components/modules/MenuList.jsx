@@ -1,8 +1,7 @@
 import React from "react";
-import { CheckOutlined, ChevronRight } from "@mui/icons-material";
+import { ChevronRight } from "@mui/icons-material";
 import { Switch } from "./Switch";
 import { clsx } from "clsx";
-import { Menu } from "@mui/base";
 
 export const MenuList = ({ children }) => {
   if (!Array.isArray(children)) {
