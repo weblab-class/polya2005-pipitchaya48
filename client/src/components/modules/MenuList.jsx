@@ -1,19 +1,37 @@
 import React from "react";
 import { CheckOutlined, ChevronRight } from "@mui/icons-material";
 import { Switch } from "./Switch";
+import { clsx } from "clsx";
+import { Menu } from "@mui/base";
 
 export const MenuList = ({ children }) => {
   if (!Array.isArray(children)) {
-    return <div className="flex flex-col w-screen p-s">{children}</div>;
+    return <div className="flex flex-col w-screen p-s max-h-full overflow-auto">{children}</div>;
   }
 
   return (
-    <div className="flex flex-col w-screen p-s">
+    <div className="flex flex-col w-screen p-s max-h-full overflow-scroll">
       {children.map((child, index) => (
         <React.Fragment key={index}>
           {index === 0 || <hr />} {child}
         </React.Fragment>
       ))}
+    </div>
+  );
+};
+
+export const MenuItem = ({ children, onClick, className, rightAdornment }) => {
+  return (
+    <div
+      onClick={onClick || (() => {})}
+      className={clsx(
+        "flex items-center justify-between p-s",
+        onClick && "hover:bg-gray-100 cursor-pointer",
+        className
+      )}
+    >
+      {children}
+      {rightAdornment}
     </div>
   );
 };
@@ -25,21 +43,16 @@ export const MenuList = ({ children }) => {
  */
 export const MenuListItem = ({ children, onClick, className }) => {
   return (
-    <div
-      onClick={onClick}
-      className="flex items-center justify-between p-s hover:bg-gray-100 cursor-pointer"
-    >
+    <MenuItem onClick={onClick} rightAdornment={<ChevronRight />}>
       <div className={className}>{children}</div>
-      <ChevronRight />
-    </div>
+    </MenuItem>
   );
 };
 
 export const MenuListSwitch = ({ children, onChange, className, checked }) => {
   return (
-    <div className="flex items-center justify-between p-s">
+    <MenuItem rightAdornment={<Switch checked={checked} onChange={onChange} />}>
       <div className={className}>{children}</div>
-      <Switch checked={checked} onChange={onChange} />
-    </div>
+    </MenuItem>
   );
 };
