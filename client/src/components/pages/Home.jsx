@@ -58,12 +58,8 @@ const handleImport = () => {
       latitude: currentLocation.latitude || dummyLatAndLong,
       longitude: currentLocation.longitude || dummyLatAndLong,
     })
-      .then((msg) => {
-        console.log(msg);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      .then(console.log)
+      .catch(console.log);
   }
 };
 
