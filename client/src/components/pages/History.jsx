@@ -43,6 +43,19 @@ const getTimeAgo = (timeSearch) => {
   return `${res} ${res > 1 ? "seconds" : "second"}`;
 };
 
+const HistoryItem = ({ from, to }) => (
+  <span className="flex flex-col">
+    <span className="flex gap-m">
+      <div className="text-gray-500 w-10">From</div>
+      <div>{from}</div>
+    </span>
+    <span className="flex gap-m">
+      <div className="text-gray-500 w-10">To</div>
+      <div>{to}</div>
+    </span>
+  </span>
+);
+
 const HistoryMenuList = ({ history }) => {
   const navigate = useNavigate();
   const { locations } = useApiState();
@@ -66,7 +79,7 @@ const HistoryMenuList = ({ history }) => {
     console.log(tempLocationsTable);
     setLocationsTable(tempLocationsTable);
   }, [locations]);
-  
+
   return (
     <MenuList className="w-full">
       {history.map(
@@ -82,16 +95,10 @@ const HistoryMenuList = ({ history }) => {
             >
               {locationsTable[historyItem.to] && locationsTable[historyItem.from] ? (
                 <div className="flex flex-row justify-between w-full">
-                  <span className="flex flex-col">
-                    <span className="flex gap-m">
-                      <div className="text-gray-500 w-10">From</div>
-                      <div>{locationsTable[historyItem.from].name}</div>
-                    </span>
-                    <span className="flex gap-m">
-                      <div className="text-gray-500 w-10">To</div>
-                      <div>{locationsTable[historyItem.to].name}</div>
-                    </span>
-                  </span>
+                  <HistoryItem
+                    from={locationsTable[historyItem.from].name}
+                    to={locationsTable[historyItem.to].name}
+                  />
                   <div className="flex flex-row items-center text-gray-500">
                     <p>{getTimeAgo(historyItem.date)} ago</p>
                     <ChevronRight />
