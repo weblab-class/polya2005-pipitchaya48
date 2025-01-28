@@ -1,0 +1,17 @@
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 45px;
+  aspect-ratio: .75;
+  --c: no-repeat linear-gradient(#000 0 0);
+  --middle-height: 40%;
+  background: 
+    var(--c) 0%   50%,
+    var(--c) 50%  calc(var(--middle-height) / 2 + 15%),
+    var(--c) 100% 50%;
+  background-size: 23% 60%, 23% var(--middle-height);
+  animation: l9 1s infinite;
+}
+@keyframes l9 {
+  33% {background-position: 0% 0%  ,50% calc(var(--middle-height) + 30%),100% 0%  }
+  66% {background-position: 0% 100%,50% 0%  ,100% 100%}
+}
