@@ -9,7 +9,7 @@ export const MenuList = ({ children }) => {
   }
 
   return (
-    <div className="flex flex-col w-screen p-s max-h-full overflow-scroll">
+    <div className="flex flex-col w-screen p-s max-h-full overflow-auto">
       {children.map((child, index) => (
         <React.Fragment key={index}>
           {index === 0 || <hr />} {child}

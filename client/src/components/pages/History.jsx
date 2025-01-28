@@ -80,7 +80,7 @@ const HistoryMenuList = ({ history }) => {
   }, [locations]);
 
   return (
-    <MenuList className="w-full">
+    <MenuList>
       {history.map(
         (historyItem) => (
           (
@@ -169,7 +169,7 @@ export const History = () => {
   );
 
   return (
-    <div className="flex flex-col items-center py-8 w-full max-h-full">
+    <div className="flex flex-col items-center py-8 w-full h-full max-h-full overflow-hidden">
       <SettingsHeading>History</SettingsHeading>
       {user ? (
         history ? (
