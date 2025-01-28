@@ -11,6 +11,7 @@ import "../../utilities.css";
 
 import { get, post } from "../../utilities";
 import { fetchLocations, useApiDispatch, useApiState } from "../hooks/ApiContext";
+import { Loading } from "../modules/Loading";
 
 const hardcodedLocations = [
   { name: "Bldg 1", longitude: -71.092587, latitude: 42.3581539 },
@@ -93,6 +94,7 @@ const Search = () => {
       fetchLocations(dispatch);
     }
   }, [locations, dispatch]);
+
   let options = locations ? [...locations] : [];
   if (navigator.geolocation) {
     options.unshift({
@@ -127,7 +129,7 @@ const Search = () => {
       </Button>
     </form>
   ) : (
-    <p>Loading Locations...</p>
+    <Loading className="w-full h-full flex justify-center" />
   );
 };
 
@@ -169,7 +171,7 @@ export const Home = () => {
       initial={{ y: "100%", opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
-      className="w-full p-m"
+      className="w-full p-m h-full"
     >
       <Search />
     </motion.div>
