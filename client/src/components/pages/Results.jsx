@@ -6,6 +6,7 @@ import "../../utilities.css";
 import { RouteUpdater } from "../modules/RouteUpdater";
 import { BaseMap } from "../modules/BaseMap";
 import { useApiState, useApiDispatch, fetchLocations } from "../hooks/ApiContext";
+import { Loading } from "../modules/Loading";
 
 function findClosestLocation(locations, coords) {
   let closestLocation = null;
@@ -42,7 +43,6 @@ export const Results = () => {
       }
       navigator.geolocation.getCurrentPosition(({ coords }) => {
         const closestLocation = findClosestLocation(locations, coords);
-        console.log(closestLocation);
         if (startLocationId === "null") {
           setStartLocationId(closestLocation._id);
         }
@@ -69,7 +69,7 @@ export const Results = () => {
           <RouteUpdater route={route} />
         </BaseMap>
       ) : (
-        <p>Loading...</p>
+        <Loading className="h-full w-full flex justify-center" />
       )}
     </div>
   );
