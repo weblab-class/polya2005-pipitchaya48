@@ -10,9 +10,6 @@ import { useNavigate } from "react-router-dom";
 export const Report = () => {
   const navigate = useNavigate();
   const [reportList, setReportList] = useState([]);
-  useEffect(() => {
-    console.log(reportList);
-  }, [reportList]);
   const handleCloseRef = useRef(null);
 
   const routeNames = (

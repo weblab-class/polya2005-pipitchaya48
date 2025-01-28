@@ -76,7 +76,6 @@ const HistoryMenuList = ({ history }) => {
     locations.forEach((location) => {
       tempLocationsTable[location._id] = location;
     });
-    console.log(tempLocationsTable);
     setLocationsTable(tempLocationsTable);
   }, [locations]);
 
@@ -84,7 +83,6 @@ const HistoryMenuList = ({ history }) => {
     <MenuList className="w-full">
       {history.map(
         (historyItem) => (
-          console.log(historyItem),
           (
             <MenuItem
               className="hover:bg-gray-100 cursor-pointer"
