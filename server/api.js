@@ -9,7 +9,7 @@
 
 // ---------- Constants ----------
 // Time interval in which the reportedRoute is restricted (in ms)
-const reportRouteTimeInterval = 20000;
+const reportRouteTimeInterval = 24 * 60 * 60 * 1000; // 1 day
 
 // -------------------------------
 

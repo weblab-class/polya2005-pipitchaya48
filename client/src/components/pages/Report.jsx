@@ -32,7 +32,7 @@ export const Report = () => {
           disabled={reportList.length === 0}
           title="Report closed routes"
           description={
-            <>These routes will be reported as unavailable for the rest of the day:{routeNames}</>
+            <>These routes will be reported as unavailable for the next 24 hours:{routeNames}</>
           }
           className="mainButton bg-bright-red text-white disabled:opacity-20 disabled:border-transparent w-full"
           dismissButtonText="Cancel"
