@@ -5,6 +5,7 @@ import { UserContext } from "../App";
 
 import "./NavBar.css";
 import "../../utilities.css";
+import mitLogo from "../../../img/mit_logo.svg";
 
 const NavBar = () => {
   const { user, handleLogin } = useContext(UserContext);
@@ -12,7 +13,7 @@ const NavBar = () => {
     <nav className="flex flex-col w-full bg-mit-red p-m justify-around shadow">
       <div className="flex justify-between">
         <div className="flex gap-s content-center">
-          <img src="../../../img/mit_logo.svg" className="h-4 my-2 self-center" />
+          <img src={mitLogo} className="h-4 my-2 self-center" />
           <h2 className="text-white text-l font-bold align-middle my-1">Tunnel Navigator</h2>
         </div>
         {user ? null : <GoogleLogin onSuccess={handleLogin} type="icon" size="medium" />}
