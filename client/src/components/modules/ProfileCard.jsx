@@ -10,7 +10,7 @@ export const ProfileCard = ({ user }) => {
   return (
     <div className="py-s flex flex-col items-center gap-l">
       <img
-        src={user?.picture || "https://www.gravatar.com/avatar/"}
+        src={user?.picture || "../../../img/Tim_front-half.svg"}
         className="block rounded-full h-32"
       />
       <h1 className="text-3xl text-center">{user?.name || "Guest"}</h1>
