@@ -5,7 +5,7 @@ import { UserContext } from "../App";
 
 import "./NavBar.css";
 import "../../utilities.css";
-import mitLogo from "../../../img/mit_logo.svg";
+import mitLogo from "/img/mit_logo.svg";
 
 const NavBar = () => {
   const { user, handleLogin } = useContext(UserContext);

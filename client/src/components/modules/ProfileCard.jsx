@@ -1,7 +1,7 @@
 import React from "react";
 
 import "../../utilities.css";
-import timBeaver from "../../../img/Tim_front-half.svg";
+import timBeaver from "/img/Tim_front-half.svg";
 
 /**
  * A card that displays the user's profile picture and name
